@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 ---
 
 <!DOCTYPE html>
@@ -60,5 +62,7 @@ import '../styles/global.css';
         <p>Copyright 2026 &copy; Hotel El Pantano</p>
     </footer>
 
+    <Analytics />
+    <SpeedInsights />
 </body>
 </html>

@@ -1,0 +1,250 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+// FAQ data
+const faqs = [
+  { q: "¿Tienen agua caliente?", a: "Sí, todas nuestras habitaciones cuentan con agua caliente para tu comodidad." },
+  { q: "¿Hay Wi-Fi en las habitaciones?", a: "Por supuesto, ofrecemos Wi-Fi de alta velocidad gratuito en todas las áreas del hotel." },
+  { q: "¿Cuál es la hora de check-in y check-out?", a: "El check-in es a partir de las 2:00 PM y el check-out es a las 12:00 MD." },
+  { q: "¿Aceptan mascotas?", a: "Somos Pet Friendly en áreas específicas. Por favor consúltenos al reservar." },
+  { q: "¿Ofrecen desayuno?", a: "Contamos con servicio de restaurante con desayunos a la carta (no incluido en la tarifa básica)." },
+];
+
+const roomImages = [
+  { src: "/images/habitaciones/interior-habitacion.webp", alt: "Interior Habitación confortable" },
+  { src: "/images/habitaciones/bano.webp", alt: "Baño Privado Moderno y Limpio" },
+  { src: "/images/habitaciones/fachada-cercana.webp", alt: "Acceso Privado a la Cabaña" },
+  { src: "/images/habitaciones/cabanas-exterior-nocturno.webp", alt: "Vista Nocturna de las Cabañas" },
+  { src: "/images/habitaciones/zona-recreativa-columpios.webp", alt: "Zona Recreativa y Jardines" },
+];
+---
+
+<Layout title="Habitaciones - Hotel El Pantano">
+  <Navbar />
+
+  <!-- Hero -->
+  <div class="hero-section min-h-[50vh]">
+    <img src="/images/habitaciones/cabanas-exterior-nocturno.webp" alt="Cabanas exterior nocturno" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="hero-content py-28">
+      <span class="inline-block bg-accent/90 text-primary-dark font-semibold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Alojamiento</span>
+      <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-lg">Nuestra Habitación</h1>
+      <p class="text-lg text-white/90 max-w-xl mx-auto font-light">Descanso y comodidad rodeados de naturaleza.</p>
+    </div>
+  </div>
+
+  <!-- Offer Banner -->
+  <div class="bg-accent text-primary-dark py-3 text-center cursor-pointer hover:bg-yellow-400 transition-colors" onclick="document.getElementById('offer-modal').showModal()">
+    <p class="font-bold text-sm md:text-base inline-flex items-center justify-center gap-2">
+      <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+      OFERTA ESPECIAL: 15% de descuento por estadía de 3+ noches — <span class="underline">Ver detalles</span>
+    </p>
+  </div>
+
+  <!-- Room Detail with Carousel -->
+  <section class="section-padding bg-white">
+    <div class="container-site">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        
+        <!-- Image Carousel -->
+        <div class="rounded-2xl overflow-hidden shadow-lg relative group" data-animate>
+          <div class="carousel flex transition-transform duration-500 ease-out h-[400px] w-full bg-gray-100" id="room-carousel">
+            {roomImages.map((img) => (
+              <img src={img.src} alt={img.alt} class="w-full h-full object-cover shrink-0" loading="lazy" />
+            ))}
+          </div>
+          
+          <!-- Controls -->
+          <button id="prevBtn" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Anterior">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <button id="nextBtn" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Siguiente">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+          
+          <!-- Indicators -->
+          <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+            {roomImages.map((_, i) => (
+              <button class="w-2.5 h-2.5 rounded-full bg-white/50 hover:bg-white transition-colors indicator" data-index={i} aria-label={`Imagen ${i+1}`}></button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div data-animate="delay-1">
+          <h2 class="text-3xl font-serif font-bold text-gray-900 mb-4">Habitación Estándar</h2>
+          <p class="text-gray-600 mb-6 leading-relaxed">
+            Te ofrece la sencillez del campo con las comodidades esenciales. Para una experiencia completa, descubre los sabores de nuestro <span class="font-semibold text-primary">restaurante familiar</span>.
+          </p>
+          
+          <h3 class="font-bold text-gray-900 mb-4">Comodidades Incluidas</h3>
+          <div class="space-y-3 mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              </div>
+              <span class="text-gray-700">Hasta 3 Huéspedes</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <span class="text-gray-700">Baño Privado con Agua Caliente</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+              </div>
+              <span class="text-gray-700">Wi-Fi de Cortesía</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <span class="text-gray-700">Parqueo Seguro</span>
+            </div>
+          </div>
+
+          <h3 class="font-bold text-gray-900 mb-4">Precios por Noche</h3>
+          <div class="space-y-3 mb-8">
+            <div class="flex items-center justify-between py-2 border-b border-dashed border-gray-200">
+              <span class="text-gray-700">1 Persona</span>
+              <span class="font-bold text-primary text-lg">C$700</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-dashed border-gray-200">
+              <span class="text-gray-700">2 Personas</span>
+              <span class="font-bold text-primary text-lg">C$750</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-dashed border-gray-200">
+              <span class="text-gray-700">3 Personas</span>
+              <span class="font-bold text-primary text-lg">C$1,000</span>
+            </div>
+          </div>
+
+          <a href="https://wa.me/50586538494?text=Hola!%20Deseo%20reservar%20una%20habitaci%C3%B3n" target="_blank" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+            Consultar Disponibilidad
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-padding bg-gray-50">
+    <div class="container-site max-w-3xl" data-animate>
+      <h2 class="text-3xl font-serif font-bold text-center text-gray-900 mb-10">Preguntas Frecuentes</h2>
+      <div class="space-y-4">
+        {faqs.map((faq) => (
+          <details class="group bg-white rounded-xl border border-gray-100 overflow-hidden">
+            <summary class="flex justify-between items-center cursor-pointer p-5 font-semibold text-gray-900 text-base hover:bg-gray-50 transition-colors">
+              {faq.q}
+              <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 text-gray-600 text-base leading-relaxed border-t border-gray-50 pt-3">{faq.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Offer Modal -->
+  <dialog id="offer-modal" class="rounded-2xl shadow-2xl p-0 w-[90%] max-w-lg m-auto backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+    <div class="p-6 md:p-8">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-serif font-bold text-gray-900 flex items-center gap-2">
+          <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          Oferta Especial
+        </h3>
+        <button onclick="this.closest('dialog').close()" class="text-gray-400 hover:text-gray-600 p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="bg-accent/10 rounded-xl p-4 mb-4 border border-accent/20">
+        <p class="text-3xl font-bold text-primary text-center">15% OFF</p>
+        <p class="text-center text-sm text-gray-600 mt-1">En estadías de 3 noches o más</p>
+      </div>
+      <h4 class="font-semibold text-gray-900 mb-2">Términos y Condiciones:</h4>
+      <ul class="text-base text-gray-600 space-y-1.5 mb-6 list-disc list-inside">
+        <li>Válido para reservaciones directas (WhatsApp o presencial).</li>
+        <li>Sujeto a disponibilidad.</li>
+        <li>No aplica con otras promociones.</li>
+        <li>Tarifa calculada sobre precio regular por noche.</li>
+      </ul>
+      <a href="https://wa.me/50586538494?text=Hola!%20Quiero%20aprovechar%20la%20oferta%20del%2015%25" target="_blank" class="block text-center bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition-colors text-base">
+        Reservar con Descuento
+      </a>
+    </div>
+  </dialog>
+
+  <Footer />
+
+  <script>
+    // Carousel Logic
+    const container = document.getElementById('room-carousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const indicators = document.querySelectorAll('.indicator');
+    let currentIndex = 0;
+    const totalImages = document.querySelectorAll('#room-carousel img').length;
+    let isTransitioning = false;
+
+    const updateCarousel = () => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+      
+      container.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      indicators.forEach((ind, i) => {
+        if(i === currentIndex) {
+          ind.classList.remove('bg-white/50');
+          ind.classList.add('bg-white', 'scale-125');
+        } else {
+          ind.classList.remove('bg-white', 'scale-125');
+          ind.classList.add('bg-white/50');
+        }
+      });
+
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 500);
+    };
+
+    nextBtn?.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % totalImages;
+      updateCarousel();
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + totalImages) % totalImages;
+      updateCarousel();
+    });
+
+    // Indicators click
+    indicators.forEach((ind, i) => {
+      ind.addEventListener('click', () => {
+        currentIndex = i;
+        updateCarousel();
+      });
+    });
+
+    // Auto play with pause on hover
+    let autoPlayInterval = setInterval(() => {
+       currentIndex = (currentIndex + 1) % totalImages;
+       updateCarousel();
+    }, 5000);
+
+    container.parentElement?.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+    container.parentElement?.addEventListener('mouseleave', () => {
+      autoPlayInterval = setInterval(() => {
+         currentIndex = (currentIndex + 1) % totalImages;
+         updateCarousel();
+      }, 5000);
+    });
+    
+    // Initialize
+    updateCarousel();
+  </script>
+</Layout>

@@ -1,0 +1,52 @@
+---
+const features = [
+  {
+    title: "Alegría para Niños",
+    description: "Con amplias áreas verdes y un divertido parque infantil, la aventura para los más pequeños está garantizada en un entorno seguro y natural.",
+    icon: "kids"
+  },
+  {
+    title: "Relax para Adultos",
+    description: "Mientras los niños juegan, relájate con la tranquilidad del campo, disfruta de la naturaleza y déjate consentir por nuestro servicio cálido.",
+    icon: "relax"
+  },
+  {
+    title: "Sabor que Une",
+    description: "Desde nuestras famosas micheladas hasta las alitas y tostones, nuestro restaurante es el punto de encuentro perfecto para disfrutar en familia.",
+    icon: "taste"
+  }
+];
+---
+
+<section class="section-padding bg-gray-50">
+  <div class="container-site">
+    <div class="text-center mb-16" data-animate>
+      <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4 tracking-tight">
+        La Promesa del Pantano
+      </h2>
+      <div class="w-24 h-1 bg-accent mx-auto rounded-full"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      {features.map((feature) => (
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col items-center text-center group" data-animate>
+          <div class="w-16 h-16 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+             {feature.icon === 'kids' && (
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5a17.92 17.92 0 01-8.716-2.247m0 0A8.966 8.966 0 013 12c0-1.257.26-2.453.726-3.538" /></svg>
+             )}
+             {feature.icon === 'relax' && (
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.115 5.19l.319 1.913A6 6 0 008.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 002.288-4.042 1.087 1.087 0 00-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 01-.98-.314l-.295-.295a1.125 1.125 0 010-1.591l.13-.132a1.125 1.125 0 011.3-.21l.603.302a.809.809 0 001.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 001.528-1.732l.146-.292M6.115 5.19A9 9 0 1017.18 4.64M6.115 5.19A8.965 8.965 0 0112 3c1.929 0 3.716.607 5.18 1.64" /></svg>
+             )}
+             {feature.icon === 'taste' && (
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1.001A3.75 3.75 0 0012 18z" /></svg>
+             )}
+          </div>
+          <h3 class="text-xl font-serif font-bold text-gray-900 mb-3">{feature.title}</h3>
+          <p class="text-gray-600 leading-relaxed font-light">
+            {feature.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

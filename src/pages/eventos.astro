@@ -1,0 +1,134 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+const events = [
+  {
+    title: "Bodas de Ensueño",
+    description: "Haz de tu día más especial un momento mágico rodeado de naturaleza. Nuestro equipo te acompañará en cada detalle para que vivas una celebración inolvidable.",
+    image: "/images/eventos/bodas/ceremonia-aire-libre.webp",
+    features: ["Capacidad hasta 400 personas", "Catering personalizado", "Decoración temática", "DJ y sonido profesional"],
+  },
+  {
+    title: "Eventos Corporativos",
+    description: "El entorno perfecto para reuniones de equipo, retiros corporativos y conferencias. Combina productividad con la tranquilidad del campo.",
+    image: "/images/eventos/corporativos/grupo-areas-verdes.webp",
+    features: ["Salones equipados", "Internet de alta velocidad", "Servicio de catering", "Áreas para dinámicas"],
+  },
+  {
+    title: "Celebraciones Sociales",
+    description: "Quinceañeros, cumpleaños, graduaciones y más. Cualquier ocasión especial merece un lugar especial como El Pantano.",
+    image: "/images/eventos/xv-anos/montaje-jardin.webp",
+    features: ["Paquetes personalizados", "Ambientación", "Menú adaptado", "Zona infantil disponible"],
+  },
+];
+
+const gallery = [
+  { src: "/images/eventos/bodas/mesa-principal-bodas.webp", alt: "Mesa principal con flores", category: "Bodas" },
+  { src: "/images/eventos/xv-anos/letrero-neon.webp", alt: "XV Años decoración neón", category: "XV Años" },
+  { src: "/images/eventos/bodas/ceremonia-jardin.webp", alt: "Ceremonia al aire libre", category: "Bodas" },
+  { src: "/images/eventos/cumpleanos/salon-morado.webp", alt: "Cumpleaños montaje salón", category: "Cumpleaños" },
+  { src: "/images/eventos/bodas/pasillo-decorado-flores.webp", alt: "Pasillo decorado con flores", category: "Bodas" },
+  { src: "/images/eventos/xv-anos/entrada-rosa.webp", alt: "Entrada temática XV Años", category: "XV Años" },
+  { src: "/images/eventos/corporativos/bienvenida-empresarial.webp", alt: "Evento empresarial", category: "Corporativos" },
+  { src: "/images/eventos/evento-carpas-nocturno.webp", alt: "Carpas nocturnas para eventos", category: "Eventos" },
+  { src: "/images/eventos/cumpleanos/infantil-granja.webp", alt: "Cumpleaños infantil tema granja", category: "Cumpleaños" },
+  { src: "/images/eventos/xv-anos/decoracion-mariposas.webp", alt: "Decoración mariposas", category: "XV Años" },
+  { src: "/images/eventos/xv-anos/recepcion-nocturna.webp", alt: "Recepción nocturna XV Años", category: "XV Años" },
+  { src: "/images/eventos/cumpleanos/nina-panda.webp", alt: "Cumpleaños tema panda", category: "Cumpleaños" },
+];
+---
+
+<Layout title="Eventos - Hotel El Pantano">
+  <Navbar />
+
+  <!-- Hero -->
+  <div class="hero-section min-h-[50vh]">
+    <img src="/images/eventos/xv-anos/montaje-jardin.webp" alt="Eventos El Pantano" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="hero-content py-28" data-animate>
+      <span class="inline-block bg-accent/90 text-primary-dark font-semibold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Celebra con Nosotros</span>
+      <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-lg">Eventos Inolvidables</h1>
+      <p class="text-lg text-white/90 max-w-xl mx-auto font-light">Creamos la magia. Tú disfrutas el momento.</p>
+    </div>
+  </div>
+
+  <!-- Events -->
+  <section class="section-padding bg-white">
+    <div class="container-site">
+      <div class="space-y-20">
+        {events.map((event, i) => (
+          <div class:list={["flex flex-col gap-8 items-center", i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"]} data-animate>
+            <div class="w-full md:w-1/2">
+              <div class="rounded-2xl overflow-hidden shadow-lg">
+                <img src={event.image} alt={event.title} class="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-500" />
+              </div>
+            </div>
+            <div class="w-full md:w-1/2">
+              <h3 class="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-4">{event.title}</h3>
+              <p class="text-gray-600 leading-relaxed mb-6">{event.description}</p>
+              <ul class="space-y-2 mb-6">
+                {event.features.map((f) => (
+                  <li class="flex items-center gap-2 text-sm text-gray-700">
+                    <svg class="w-5 h-5 text-primary shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <a href="/contacto" class="inline-block bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+                Cotizar Evento
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery -->
+  <section class="section-padding bg-stone-50">
+    <div class="container-site">
+      <div class="text-center mb-14" data-animate>
+        <span class="text-accent font-bold tracking-wider uppercase text-sm mb-3 block">Galería</span>
+        <h2 class="text-3xl md:text-5xl font-serif font-bold text-gray-900 mb-4">Momentos que Hablan por Sí Solos</h2>
+        <p class="text-gray-500 text-lg max-w-2xl mx-auto font-light">Eventos reales celebrados en Hotel El Pantano. Tu celebración podría ser la próxima.</p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {gallery.map((img) => (
+          <div class="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+            <img src={img.src} alt={img.alt} class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+              <span class="inline-block bg-accent/90 text-gray-900 font-bold text-xs uppercase tracking-wider px-2 py-0.5 rounded-full">{img.category}</span>
+              <p class="text-white text-sm mt-1 font-light">{img.alt}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative py-24 text-white overflow-hidden">
+    <img src="/images/eventos/evento-carpas-nocturno.webp" alt="Celebración" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/60"></div>
+    <div class="relative z-10 container-site text-center max-w-3xl" data-animate>
+      <h2 class="text-3xl md:text-5xl font-serif font-bold mb-4">Tu Evento Comienza Aquí</h2>
+      <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 font-light">
+        Desde la idea hasta el último detalle, nuestro equipo te acompaña para hacer realidad la celebración que siempre soñaste. Con capacidad para hasta <span class="text-white font-semibold">400 personas</span>.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://wa.me/50586538494?text=Hola!%20Quiero%20cotizar%20un%20evento" target="_blank" class="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(226,196,41,0.3)] hover:shadow-[0_0_30px_rgba(226,196,41,0.5)] transform hover:-translate-y-1">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+          Cotizar por WhatsApp
+        </a>
+        <a href="/contacto" class="inline-flex items-center justify-center gap-2 bg-transparent border border-white/30 hover:bg-white/10 text-white font-medium px-8 py-4 rounded-full transition-all duration-300">
+          Enviar Mensaje
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,284 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+
+/* ========= COMIDA LIGERA ========= */
+const comidaLigera = [
+  {
+    title: "Alitas",
+    description: "Servido con papas",
+    items: [
+      { name: "Alitas Salsa Barbacoa", price: "C$300" },
+      { name: "Alitas Salsa Búfalo", price: "C$300" },
+      { name: "Alitas Mango Habanero", price: "C$320" },
+      { name: "Alitas Honey Hot (De la casa)", price: "C$300" },
+      { name: "Alitas Miel Mostaza", price: "C$300" },
+      { name: "Alitas Cheddar", price: "C$320" },
+      { name: "Alitas Chile Habanero", price: "C$300" },
+    ]
+  },
+  {
+    title: "Tostones",
+    description: "Opciones variadas",
+    items: [
+      { name: "Tostones con Chorizo", price: "C$120" },
+      { name: "Tostones con Queso", price: "C$120" },
+      { name: "Tostones Mixtos", price: "C$170" },
+      { name: "Tostones Pantano", price: "C$250" },
+      { name: "Tostones con Choriquisillo", price: "C$160" },
+    ]
+  },
+  {
+    title: "Hamburguesas",
+    description: "Extra de papas +C$50",
+    items: [
+      { name: "Superburguesa", price: "C$180" },
+      { name: "Hamburguesa Tocino", price: "C$130" },
+      { name: "Hamburguesa Sencilla", price: "C$110" },
+      { name: "Hamburguesa 3 Quesos", price: "C$170" },
+    ]
+  },
+  {
+    title: "Papas Fritas",
+    description: "Crujientes y doradas",
+    items: [
+      { name: "Papas Fritas", price: "C$100" },
+      { name: "Papas con Queso", price: "C$150" },
+      { name: "Papas Fritas c/Salchicha", price: "C$190" },
+      { name: "Papas Fundidas (Tocino Cheddar)", price: "C$220" },
+    ]
+  },
+];
+
+/* ========= COMIDA A LA CARTA ========= */
+const comidaCarta = [
+  {
+    title: "Pollo",
+    items: [
+      { name: "Filete de Pollo", price: "C$300" },
+      { name: "Filete de Pollo en Salsa Jalapeña", price: "C$350" },
+      { name: "Filete de Pollo en Salsa de Hongos", price: "C$360" },
+      { name: "Pollo Frito (Pierna con Muslo)", price: "C$270" },
+      { name: "Pollo Frito en Salsa Jalapeña", price: "C$320" },
+    ]
+  },
+  {
+    title: "Cerdo",
+    items: [
+      { name: "Filete de Cerdo", price: "C$300" },
+      { name: "Filete de Cerdo Encebollado", price: "C$325" },
+      { name: "Filete de Cerdo Entomatado", price: "C$325" },
+      { name: "Filete de Cerdo BBQ", price: "C$325" },
+    ]
+  },
+  {
+    title: "Res",
+    items: [
+      { name: "Filete de Res", price: "C$300" },
+      { name: "Jalapeño de Res", price: "C$350" },
+      { name: "Filete de Res en Salsa de Hongos", price: "C$360" },
+    ]
+  },
+];
+
+/* ========= BEBIDAS ALCOHÓLICAS ========= */
+const bebidasAlcoholicas = [
+  {
+    title: "Cervezas",
+    items: [
+      { name: "Toña Clásica", price: "C$70" },
+      { name: "Sol", price: "C$110" },
+      { name: "Seltzer Spark", price: "C$65" },
+      { name: "Smirnoff", price: "C$130" },
+      { name: "Miller", price: "C$75" },
+      { name: "Heineken 0", price: "C$115" },
+      { name: "Frost", price: "C$55" },
+    ]
+  },
+  {
+    title: "Micheladas",
+    items: [
+      { name: "Original", price: "C$150" },
+      { name: "Mango", price: "C$150" },
+      { name: "Tamarindo", price: "C$150" },
+      { name: "Cálala", price: "C$150" },
+      { name: "Especial de Verano", price: "C$180" },
+    ]
+  },
+  {
+    title: "Ron",
+    items: [
+      { name: "Gran Reserva", price: "" },
+      { name: "Ultra Lite", price: "" },
+      { name: "Extra Lite", price: "" },
+      { name: "Mangonada con Alcohol", price: "C$120" },
+    ]
+  },
+];
+
+/* ========= BEBIDAS NO ALCOHÓLICAS ========= */
+const bebidasNoAlcoholicas = [
+  {
+    title: "Bebidas",
+    items: [
+      { name: "Jugo de Naranja", price: "C$35" },
+      { name: "Agua Mineral", price: "C$35" },
+      { name: "Agua Gasificada", price: "C$50" },
+      { name: "Gaseosa 12 oz", price: "C$25" },
+      { name: "Fresco Natural", price: "C$50" },
+      { name: "Mangonada", price: "C$80" },
+    ]
+  },
+  {
+    title: "Batidos",
+    items: [
+      { name: "Batido de Café", price: "C$80" },
+      { name: "Batido Oreo", price: "C$100" },
+      { name: "Batido Pingüino Marinela", price: "C$120" },
+    ]
+  },
+];
+---
+
+<Layout title="Menú - Hotel El Pantano">
+  <Navbar />
+
+  <!-- Hero -->
+  <div class="hero-section min-h-[50vh]">
+    <img src="/images/comida/papas-preparadas.webp" alt="Restaurante El Pantano" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="hero-content py-28">
+      <span class="inline-block bg-accent/90 text-primary-dark font-semibold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Restaurante</span>
+      <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-lg">Nuestro Menú</h1>
+      <p class="text-lg text-white/90 max-w-xl mx-auto font-light">Sabores auténticos del campo nicaragüense.</p>
+    </div>
+  </div>
+
+  <!-- ==================== COMIDA LIGERA ==================== -->
+  <section class="section-padding bg-white">
+    <div class="container-site">
+      <div class="text-center mb-14" data-animate>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-3">Comida Ligera</h2>
+        <div class="w-16 h-1 bg-accent mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {comidaLigera.map((cat) => (
+          <div class="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100 hover:shadow-lg transition-shadow" data-animate>
+            <h3 class="text-xl md:text-2xl font-serif font-bold text-gray-900 mb-1">{cat.title}</h3>
+            <p class="text-sm text-gray-500 mb-6">{cat.description}</p>
+            <ul class="space-y-3">
+              {cat.items.map((item) => (
+                <li class="flex justify-between items-center py-1.5 border-b border-dashed border-gray-200 last:border-0">
+                  <span class="text-gray-700 text-base">{item.name}</span>
+                  <span class="font-semibold text-primary text-base whitespace-nowrap ml-4">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== COMIDA A LA CARTA ==================== -->
+  <section class="section-padding bg-gray-50">
+    <div class="container-site">
+      <div class="text-center mb-14" data-animate>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-3">Comida a la Carta</h2>
+        <div class="w-16 h-1 bg-accent mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {comidaCarta.map((cat) => (
+          <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 hover:shadow-lg transition-shadow" data-animate>
+            <h3 class="text-xl md:text-2xl font-serif font-bold text-gray-900 mb-6">{cat.title}</h3>
+            <ul class="space-y-3">
+              {cat.items.map((item) => (
+                <li class="flex justify-between items-center py-1.5 border-b border-dashed border-gray-200 last:border-0">
+                  <span class="text-gray-700 text-base">{item.name}</span>
+                  <span class="font-semibold text-primary text-base whitespace-nowrap ml-4">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BEBIDAS ALCOHÓLICAS ==================== -->
+  <section class="section-padding bg-white">
+    <div class="container-site">
+      <div class="text-center mb-14" data-animate>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-3">Bebidas Alcohólicas</h2>
+        <div class="w-16 h-1 bg-accent mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {bebidasAlcoholicas.map((cat) => (
+          <div class="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100 hover:shadow-lg transition-shadow" data-animate>
+            <h3 class="text-xl md:text-2xl font-serif font-bold text-gray-900 mb-6">{cat.title}</h3>
+            <ul class="space-y-3">
+              {cat.items.map((item) => (
+                <li class="flex justify-between items-center py-1.5 border-b border-dashed border-gray-200 last:border-0">
+                  <span class="text-gray-700 text-base">{item.name}</span>
+                  {item.price && <span class="font-semibold text-primary text-base whitespace-nowrap ml-4">{item.price}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BEBIDAS NO ALCOHÓLICAS ==================== -->
+  <section class="section-padding bg-gray-50">
+    <div class="container-site">
+      <div class="text-center mb-14" data-animate>
+        <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-3">Bebidas No Alcohólicas</h2>
+        <div class="w-16 h-1 bg-accent mx-auto rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {bebidasNoAlcoholicas.map((cat) => (
+          <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 hover:shadow-lg transition-shadow" data-animate>
+            <h3 class="text-xl md:text-2xl font-serif font-bold text-gray-900 mb-6">{cat.title}</h3>
+            <ul class="space-y-3">
+              {cat.items.map((item) => (
+                <li class="flex justify-between items-center py-1.5 border-b border-dashed border-gray-200 last:border-0">
+                  <span class="text-gray-700 text-base">{item.name}</span>
+                  <span class="font-semibold text-primary text-base whitespace-nowrap ml-4">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="relative py-24 text-white overflow-hidden">
+    <img src="/images/restaurante/letrero-neon-pantano.webp" alt="Restaurante El Pantano" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/60"></div>
+    <div class="relative z-10 container-site text-center max-w-3xl" data-animate>
+      <h2 class="text-3xl md:text-5xl font-serif font-bold mb-4">El Sabor que Nos Une</h2>
+      <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 font-light">
+        Ingredientes frescos de la tierra jalapeña, recetas con generaciones de tradición y el cariño de quienes cocinamos con el corazón. <span class="text-white font-semibold">Probá lo auténtico.</span>
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://wa.me/50586538494?text=Hola!%20Quiero%20hacer%20un%20pedido" target="_blank" class="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(226,196,41,0.3)] hover:shadow-[0_0_30px_rgba(226,196,41,0.5)] transform hover:-translate-y-1">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+          Ordenar por WhatsApp
+        </a>
+        <a href="/contacto" class="inline-flex items-center justify-center gap-2 bg-transparent border border-white/30 hover:bg-white/10 text-white font-medium px-8 py-4 rounded-full transition-all duration-300">
+          Contáctanos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

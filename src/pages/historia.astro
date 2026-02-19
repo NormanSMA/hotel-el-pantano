@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Nuestra Historia - Hotel El Pantano">
+  <Navbar />
+
+  <!-- Hero -->
+  <div class="hero-section min-h-[50vh]">
+    <img src="/images/hero/hotel-pantano-exterior.webp" alt="Historia El Pantano" class="absolute inset-0 w-full h-full object-cover" />
+    <div class="hero-content py-28">
+      <span class="inline-block bg-accent/90 text-primary-dark font-semibold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-4">Desde 2003</span>
+      <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-lg">Un Legado que Florece</h1>
+      <p class="text-lg text-white/90 max-w-xl mx-auto font-light italic">"El sueño de un hombre, el corazón de una familia."</p>
+    </div>
+  </div>
+
+  <!-- Origin -->
+  <section class="section-padding bg-white">
+    <div class="container-site max-w-6xl">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        
+        <!-- Founder Image -->
+        <div class="relative group" data-animate>
+          <div class="absolute -inset-3 bg-accent/20 rounded-2xl transform rotate-2 transition-transform group-hover:rotate-4"></div>
+          <div class="absolute -inset-3 bg-primary/10 rounded-2xl transform -rotate-2 transition-transform group-hover:-rotate-4"></div>
+          <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+            <img 
+              src="/images/historia/fundador-seated.webp" 
+              alt="Wilhelmus Johannes María - Fundador de Hotel El Pantano" 
+              class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div data-animate="delay-1">
+          <span class="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-4 block">El Origen</span>
+          <h2 class="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-8">El Legado de un Sueño</h2>
+          <div class="text-gray-600 text-lg leading-relaxed space-y-4">
+            <p>
+              Todo comenzó con un viaje y un profundo amor por Nicaragua.
+              <strong class="text-primary font-serif">Wilhelmus Johannes María</strong>, un holandés con espíritu aventurero,
+              vio en las colinas de Jalapa no solo belleza, sino una oportunidad.
+            </p>
+            <p>
+              Su sueño era simple pero poderoso: crear un refugio que mostrara al mundo el encanto del norte del país.
+              Construir un ambiente único donde cada visitante, nacional o extranjero, se sintiera como en casa.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="section-padding bg-gray-50">
+    <div class="container-site max-w-5xl">
+      
+      <!-- 2003 -->
+      <div class="flex flex-col md:flex-row gap-8 md:gap-12 items-center mb-20">
+        <div class="w-full md:w-1/2" data-animate>
+          <div class="rounded-2xl overflow-hidden shadow-lg">
+            <img src="/images/historia/inicios-construccion.webp" alt="Inicios del Hotel" class="w-full aspect-[4/3] object-cover grayscale hover:grayscale-0 transition-all duration-500" loading="lazy" />
+          </div>
+        </div>
+        <div class="w-full md:w-1/2" data-animate="delay-1">
+          <span class="font-serif text-5xl text-gray-200 font-bold block -mb-2">2003</span>
+          <h3 class="font-serif text-2xl font-bold text-primary mb-4">La Primera Piedra</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Con trabajo duro y una visión clara, se construyeron las primeras cabañas. El Pantano era una promesa, un lugar rústico que invitaba a descubrir la naturaleza virgen de Jalapa.
+          </p>
+        </div>
+      </div>
+
+      <!-- Today -->
+      <div class="flex flex-col md:flex-row-reverse gap-8 md:gap-12 items-center">
+        <div class="w-full md:w-1/2" data-animate>
+          <div class="rounded-2xl overflow-hidden shadow-lg">
+            <img src="/images/hero/jardin-panoramico-arcoiris.webp" alt="Hotel El Pantano hoy" class="w-full aspect-[4/3] object-cover" loading="lazy" />
+          </div>
+        </div>
+        <div class="w-full md:w-1/2 md:text-right" data-animate="delay-1">
+          <span class="font-serif text-5xl text-gray-200 font-bold block -mb-2">HOY</span>
+          <h3 class="font-serif text-2xl font-bold text-primary mb-4">Un Legado que Crece</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Lo que fue un sueño pionero es hoy un destino para familias y eventos. Cada nueva área es un tributo a la visión original, adaptada para crear los mejores recuerdos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values + CTA -->
+  <section class="relative py-24 text-white overflow-hidden">
+    <img src="/images/hero/decoracion-evento.webp" alt="Decoración rústica El Pantano" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/60"></div>
+    <div class="container-site relative z-10" data-animate>
+      <h2 class="text-3xl md:text-4xl font-serif font-bold text-center mb-14">Nuestra Promesa</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
+          <div class="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <h3 class="font-serif text-xl font-bold mb-3 text-accent">Hospitalidad con Alma</h3>
+          <p class="text-white/70 text-sm">Honramos el sueño de Wilhelmus tratando a cada huésped como familia.</p>
+        </div>
+        <div class="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
+          <div class="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="font-serif text-xl font-bold mb-3 text-accent">Autenticidad</h3>
+          <p class="text-white/70 text-sm">Mantenemos viva la esencia rústica y el amor por la naturaleza.</p>
+        </div>
+        <div class="text-center p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-colors">
+          <div class="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="font-serif text-xl font-bold mb-3 text-accent">Futuro</h3>
+          <p class="text-white/70 text-sm">Innovamos constantemente para asegurar que El Pantano sea siempre tu mejor elección.</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-16 max-w-3xl mx-auto">
+        <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-10 font-light">
+          Viví la experiencia El Pantano. <span class="text-white font-semibold">Tu próxima escapada al campo te espera.</span>
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://wa.me/50586538494?text=Hola!%20Quiero%20reservar%20una%20habitación" target="_blank" class="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-gray-900 font-bold px-8 py-4 rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(226,196,41,0.3)] hover:shadow-[0_0_30px_rgba(226,196,41,0.5)] transform hover:-translate-y-1">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+            Reservar Ahora
+          </a>
+          <a href="/habitaciones" class="inline-flex items-center justify-center gap-2 bg-transparent border border-white/30 hover:bg-white/10 text-white font-medium px-8 py-4 rounded-full transition-all duration-300">
+            Ver Habitación
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>

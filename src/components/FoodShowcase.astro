@@ -1,0 +1,95 @@
+---
+---
+
+<section class="relative py-24 bg-gray-950 text-white overflow-hidden">
+  
+  <!-- Subtle background pattern -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="container-site relative z-10">
+    
+    <!-- Header -->
+    <div class="text-center mb-16" data-animate>
+      <span class="text-accent font-bold tracking-wider uppercase text-sm mb-3 block">Lo más pedido</span>
+      <h2 class="text-4xl md:text-5xl font-serif font-bold mb-4">
+        Nuestros <span class="text-accent italic">Favoritos</span>
+      </h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+        Los platillos y bebidas que nuestros visitantes no dejan de pedir. Sabores que te harán volver.
+      </p>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Card 1: Michelada Especial -->
+      <div class="group relative rounded-2xl overflow-hidden" data-animate="delay-1">
+        <div class="aspect-[3/4] overflow-hidden">
+          <img 
+            src="/images/comida/michelada.webp" 
+            alt="Michelada Especial El Pantano" 
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            loading="lazy"
+          />
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="inline-block bg-accent/90 text-gray-900 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-3">⭐ La Más Pedida</span>
+          <h3 class="text-2xl font-serif font-bold mb-1">Michelada Especial</h3>
+          <p class="text-gray-300 text-sm font-light mb-3">La reina de la casa. Cerveza bien fría preparada con nuestra mezcla exclusiva de salsas, limón recién exprimido y un borde escarchado que despierta tus sentidos.</p>
+          <span class="text-accent font-bold text-lg">C$100</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Alitas Crujientes -->
+      <div class="group relative rounded-2xl overflow-hidden" data-animate="delay-2">
+        <div class="aspect-[3/4] overflow-hidden">
+          <img 
+            src="/images/comida/alitas-real.webp" 
+            alt="Alitas Crujientes El Pantano" 
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            loading="lazy"
+          />
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="inline-block bg-accent/90 text-gray-900 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-3">Comida Ligera</span>
+          <h3 class="text-2xl font-serif font-bold mb-1">Alitas Crujientes</h3>
+          <p class="text-gray-300 text-sm font-light mb-3">Irresistiblemente crujientes y bañadas en tu salsa favorita. Acompañadas de papas fritas doradas y vegetales frescos. ¡Para chuparse los dedos!</p>
+          <span class="text-accent font-bold text-lg">C$200</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Batido Oreo -->
+      <div class="group relative rounded-2xl overflow-hidden" data-animate="delay-3">
+        <div class="aspect-[3/4] overflow-hidden">
+          <img 
+            src="/images/comida/batido-oreo.webp" 
+            alt="Batido Oreo El Pantano" 
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            loading="lazy"
+          />
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6">
+          <span class="inline-block bg-accent/90 text-gray-900 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-3">Postres</span>
+          <h3 class="text-2xl font-serif font-bold mb-1">Batido Oreo</h3>
+          <p class="text-gray-300 text-sm font-light mb-3">Una explosión de sabor cremoso. Helado de vainilla de primera calidad mezclado con generosos trozos de galleta Oreo y coronado con chantilly.</p>
+          <span class="text-accent font-bold text-lg">C$80</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-14">
+      <a href="/menu" class="inline-flex items-center gap-2 bg-transparent border border-white/30 hover:bg-white/10 text-white font-medium px-8 py-4 rounded-full transition-all duration-300 group">
+        Ver Menú Completo
+        <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>

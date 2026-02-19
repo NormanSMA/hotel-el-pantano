@@ -1,20 +1,75 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
 
 @import "tailwindcss";
 
 @theme {
   --font-serif: "Playfair Display", serif;
   --font-sans: "Outfit", sans-serif;
+
+  --color-primary: #266415;
+  --color-primary-light: #2e7a1b;
+  --color-primary-dark: #1a4a0e;
+  --color-secondary: #1f6a0b;
+  --color-accent: #e2c429;
+  --color-accent-hover: #d1b525;
+}
+
+/* Theme Toggle Animation */
+#theme-toggle svg {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#theme-toggle:hover svg {
+  transform: rotate(45deg) scale(1.15);
+}
+
+/* Navbar link & toggle hover color when background is white */
+#navbar.bg-white .nav-link:hover,
+#navbar.bg-white #theme-toggle:hover {
+  color: #1f6a0b !important;
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    @apply font-sans;
+    @apply font-sans antialiased text-gray-800 bg-white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+    line-height: 1.2;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  img {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* Utility animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes breathing {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.95;
   }
@@ -24,31 +79,177 @@
   }
 }
 
-@keyframes fadeInElegant {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .animate-breathing {
   animation: breathing 4s ease-in-out infinite;
 }
 
-.animate-fade-in {
-  animation: fadeInElegant 1s ease-out forwards;
+.delay-100 {
+  animation-delay: 0.1s;
 }
-
 .delay-200 {
   animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
 }
 .delay-400 {
   animation-delay: 0.4s;
 }
-.delay-600 {
-  animation-delay: 0.6s;
+
+/* Section spacing standardization */
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+/* Consistent container */
+.container-site {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* ===== Scroll Animations ===== */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-animate="delay-1"] { transition-delay: 0.15s; }
+[data-animate="delay-2"] { transition-delay: 0.3s; }
+[data-animate="delay-3"] { transition-delay: 0.45s; }
+
+/* ===== Dark Mode Support (Manual) ===== */
+.dark {
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-main: #334155;
+  --accent-soft: rgba(226, 196, 41, 0.2);
+  --primary-soft: rgba(74, 222, 128, 0.15);
+}
+
+.dark body {
+  background-color: var(--bg-main) !important;
+  color: var(--text-main) !important;
+}
+
+/* Specific Component Overrides for Dark Mode */
+.dark .bg-white, 
+.dark .bg-stone-50, 
+.dark .bg-gray-50 {
+  background-color: var(--bg-card) !important;
+}
+
+.dark .text-gray-900, 
+.dark .text-gray-800,
+.dark .text-gray-700 {
+  color: var(--text-main);
+}
+
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: var(--text-muted) !important;
+}
+
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-50 {
+  border-color: var(--border-main) !important;
+}
+
+/* Icon backgrounds "illumination" */
+.dark .bg-primary\/10 {
+  background-color: var(--primary-soft) !important;
+  color: #4ade80 !important; /* Brighter green for icons in dark mode */
+}
+
+/* Specific button/accent overrides */
+.dark .bg-accent\/10 {
+  background-color: var(--accent-soft) !important;
+}
+
+.dark .indicator.bg-white\/50 {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.dark details,
+.dark details summary,
+.dark details div {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+.dark details summary:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .text-gray-600, 
+.dark .text-gray-500, 
+.dark .text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
+.dark .border-gray-100, 
+.dark .border-gray-200, 
+.dark .border-stone-200 {
+  border-color: var(--border-main) !important;
+}
+
+/* Navbar Adjustments in Dark Mode */
+.dark #navbar.bg-white {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-main);
+}
+
+.dark .nav-link:hover {
+  color: #1f6a0b !important; /* Brand Green */
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .nav-link.text-white,
+.dark .nav-link.text-white\/90 {
+  color: var(--text-main) !important;
+}
+
+.dark .nav-link.text-white:hover,
+.dark .nav-link.text-white\/90:hover {
+  color: #ffffff !important;
+}
+
+/* Fix for the white box in dark mode (active/hover states) */
+.dark .bg-gray-100,
+.dark .hover\:bg-gray-100:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark #mobile-menu {
+  background-color: #0f172a;
+}
+
+/* Hero overlay for Navbar readability */
+.hero-section {
+  @apply relative min-h-[70vh] flex items-center justify-center overflow-hidden;
+}
+
+.hero-section::before {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/50;
+  z-index: 1;
+}
+
+.hero-content {
+  @apply relative z-10 text-center px-4 max-w-4xl mx-auto;
 }

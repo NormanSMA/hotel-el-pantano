@@ -4,7 +4,7 @@ Sitio web oficial del **Hotel & Restaurante El Pantano**, una plataforma moderna
 
 ---
 
-## �️ Tecnologías Usadas
+## Tecnologías Usadas
 
 El proyecto está construido con un stack moderno enfocado en el rendimiento y la experiencia de usuario:
 
@@ -24,27 +24,16 @@ El proyecto está construido con un stack moderno enfocado en el rendimiento y l
 
 ---
 
-## ✨ Características Principales
+## Características Principales
 
-- 🌓 **Modo Oscuro Inteligente**: Selector de tema manual y detección automática de preferencias.
-- 📱 **Navegación Móvil Optimizada**: Menú dinámico que se adapta al scroll y al tema.
-- 🚀 **SEO & Performance**: Configurado con sitemap, robots.txt, compresión de imágenes y Lazy Loading.
-- 💬 **Reservas Directas**: Integración fluida con WhatsApp para una conversión rápida.
-- 🗺️ **Geolocalización**: Formulario de contacto inteligente con detección de ubicación del visitante.
-
----
-
-## 🧞 Comandos
-
-| Comando           | Acción                                                |
-| :---------------- | :---------------------------------------------------- |
-| `npm install`     | Instala las dependencias del proyecto.                |
-| `npm run dev`     | Inicia el servidor de desarrollo en `localhost:4321`. |
-| `npm run build`   | Construye el sitio para producción en `./dist/`.      |
-| `npm run preview` | Previsualiza la construcción localmente.              |
+- **Modo Oscuro Inteligente**: Selector de tema manual y detección automática de preferencias.
+- **Navegación Móvil Optimizada**: Menú dinámico que se adapta al scroll y al tema.
+- **SEO & Performance**: Configurado con sitemap, robots.txt, compresión de imágenes y Lazy Loading.
+- **Reservas Directas**: Integración fluida con WhatsApp para una conversión rápida.
+- **Geolocalización**: Formulario de contacto inteligente con detección de ubicación del visitante.
 
 ---
 
-## 🧑‍� Desarrollo
+## Desarrollo
 
 Desarrollado para ofrecer elegancia y funcionalidad en el sector hotelero.

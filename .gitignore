@@ -23,4 +23,9 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .vercel
-.agent/skills/
+.agent/
+.agents/
+.gemini/
+.vscode/
+.env*
+!.env.example

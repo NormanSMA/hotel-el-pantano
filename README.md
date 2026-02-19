@@ -1,4 +1,4 @@
-# 🌿 Hotel & Restaurante El Pantano
+# Hotel & Restaurante El Pantano
 
 Sitio web oficial del **Hotel & Restaurante El Pantano**, una plataforma moderna diseñada para ofrecer una experiencia premium a los huéspedes y comensales. El sitio destaca la belleza natural del hotel, facilita la exploración del menú gastronómico y optimiza el flujo de reservas.
 

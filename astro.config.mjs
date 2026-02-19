@@ -9,7 +9,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://hotelelpantano.com",
+  site: "https://www.hotel-el-pantano.org",
 
   vite: {
     plugins: [tailwindcss()],

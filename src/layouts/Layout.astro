@@ -25,6 +25,15 @@ const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 <html lang="es" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-MVB82FRY9Q"></script>
+		<script is:inline>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'G-MVB82FRY9Q');
+		</script>
 		<script is:inline>
 			const theme = (() => {
 				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {

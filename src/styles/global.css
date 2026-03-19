@@ -2,6 +2,10 @@
 
 @import "tailwindcss";
 
+/* Configure dark mode to use .dark class (not OS media query) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 @theme {
   --font-serif: "Playfair Display", serif;
   --font-sans: "Outfit", sans-serif;
@@ -235,9 +239,6 @@
   background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-.dark #mobile-menu {
-  background-color: #0f172a;
-}
 
 /* Hero overlay for Navbar readability */
 .hero-section {

@@ -109,7 +109,7 @@ const isHome = pathname === "/";
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class:list={["lg:hidden hidden border-t bg-white dark:bg-slate-900 border-gray-100 dark:border-white/10 shadow-xl"]}>
+  <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-100 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl">
     <div class="px-4 py-4 space-y-1">
       <a href="/" class:list={[
         "block px-4 py-3 rounded-lg text-base font-medium transition-colors",
@@ -175,49 +175,64 @@ const isHome = pathname === "/";
   const mobileMenu = document.getElementById('mobile-menu'); // Added this line
   const isHomePage = document.body.dataset.page === 'home' || window.location.pathname === '/';
 
+  function isDarkMode() {
+    return document.documentElement.classList.contains('dark');
+  }
+
+  function applyNavbarScrolledStyle() {
+    const dark = isDarkMode();
+    navbar?.classList.add(dark ? 'bg-slate-900' : 'bg-white', 'shadow-sm');
+    navbar?.classList.remove('bg-transparent', dark ? 'bg-white' : 'bg-slate-900');
+    brandName?.classList.add(dark ? 'text-white' : 'text-gray-900');
+    brandName?.classList.remove(dark ? 'text-gray-900' : 'text-white');
+    brandSub?.classList.add(dark ? 'text-white/70' : 'text-gray-500');
+    brandSub?.classList.remove(dark ? 'text-gray-500' : 'text-white/70');
+    mobileToggle?.classList.add(dark ? 'text-white' : 'text-gray-700');
+    mobileToggle?.classList.remove(dark ? 'text-gray-700' : 'text-white');
+    // Nav links in the desktop nav bar only (not mobile menu items)
+    document.querySelectorAll('#navbar .nav-link, #theme-toggle').forEach(link => {
+      if (!link.classList.contains('text-accent') && !link.classList.contains('text-primary')) {
+        link.classList.remove('text-white', 'text-white/90');
+        link.classList.add(dark ? 'text-white/90' : 'text-gray-600', 'hover:bg-gray-100');
+      }
+    });
+  }
+
+  function applyNavbarTransparentStyle() {
+    navbar?.classList.remove('bg-white', 'bg-slate-900', 'shadow-sm');
+    navbar?.classList.add('bg-transparent');
+    brandName?.classList.remove('text-gray-900', 'text-white');
+    brandName?.classList.add('text-white');
+    brandSub?.classList.remove('text-gray-500', 'text-white/70');
+    brandSub?.classList.add('text-white/70');
+    mobileToggle?.classList.remove('text-gray-700', 'text-white');
+    mobileToggle?.classList.add('text-white');
+    document.querySelectorAll('#navbar .nav-link, #theme-toggle').forEach(link => {
+      if (!link.classList.contains('text-accent') && !link.classList.contains('text-primary')) {
+        link.classList.remove('text-gray-600', 'text-white/90', 'hover:bg-gray-100');
+        link.classList.add('text-white');
+      }
+    });
+  }
+
   function handleScroll() {
     if (!isHomePage) return;
     
-    // Si el menú móvil está abierto, forzamos fondo blanco y no lo quitamos
     const isMobileMenuOpen = !mobileMenu?.classList.contains('hidden');
     
     if (window.scrollY > 60 || isMobileMenuOpen) {
-      navbar?.classList.add('bg-white', 'shadow-sm');
-      navbar?.classList.remove('bg-transparent');
-      brandName?.classList.add('text-gray-900');
-      brandName?.classList.remove('text-white');
-      brandSub?.classList.add('text-gray-500');
-      brandSub?.classList.remove('text-white/70');
-      mobileToggle?.classList.add('text-gray-700');
-      mobileToggle?.classList.remove('text-white');
-      // Update nav links and theme toggle
-      document.querySelectorAll('#navbar .nav-link, #theme-toggle').forEach(link => {
-        if (!link.classList.contains('text-accent') && !link.classList.contains('text-primary')) {
-          link.classList.remove('text-white', 'text-white/90');
-          link.classList.add('text-gray-600', 'hover:bg-gray-100');
-        }
-      });
+      applyNavbarScrolledStyle();
     } else {
-      navbar?.classList.remove('bg-white', 'shadow-sm');
-      navbar?.classList.add('bg-transparent');
-      brandName?.classList.remove('text-gray-900');
-      brandName?.classList.add('text-white');
-      brandSub?.classList.remove('text-gray-500');
-      brandSub?.classList.add('text-white/70');
-      mobileToggle?.classList.remove('text-gray-700');
-      mobileToggle?.classList.add('text-white');
-      document.querySelectorAll('#navbar .nav-link, #theme-toggle').forEach(link => {
-        if (!link.classList.contains('text-accent') && !link.classList.contains('text-primary')) {
-          link.classList.remove('text-gray-600', 'hover:bg-gray-100');
-          link.classList.add('text-white');
-        }
-      });
+      applyNavbarTransparentStyle();
     }
   }
 
   if (isHomePage) {
     window.addEventListener('scroll', handleScroll);
     handleScroll();
+  } else {
+    // Non-home pages: always apply theme-aware scrolled style on load
+    applyNavbarScrolledStyle();
   }
 
   // Mobile menu
@@ -256,6 +271,12 @@ const isHome = pathname === "/";
     const isDark = document.documentElement.classList.contains('dark');
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     updateThemeIcons();
+    // Re-apply navbar/menu styles with the new theme
+    handleScroll();
+    // For non-home pages, always show scrolled style
+    if (!isHomePage) {
+      applyNavbarScrolledStyle();
+    }
   });
 
   // Initialize icons

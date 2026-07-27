@@ -21,7 +21,7 @@ export const contact = {
   phone: "+505 8653 8494",
   phoneRaw: "+50586538494",
   whatsapp: "50586538494",
-  email: "info@hotelelpantano.com",
+  email: "elpantanohotel@gmail.com",
   addressLocality: "Jalapa",
   addressRegion: "Nueva Segovia",
   addressCountry: "NI",

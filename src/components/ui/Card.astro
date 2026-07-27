@@ -1,0 +1,26 @@
+---
+interface Props {
+  href?: string;
+  /** raised = superficie con borde · outline = sólo borde · flat = sin adorno */
+  variant?: "raised" | "outline" | "flat";
+  class?: string;
+}
+
+const { href, variant = "raised", class: className = "" }: Props = Astro.props;
+
+const base =
+  "group relative isolate overflow-hidden rounded-panel transition-[border-color,box-shadow,transform] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)]";
+
+const variants = {
+  raised:
+    "bg-surface-raised border border-subtle hover:-translate-y-1 hover:border-default hover:shadow-raised motion-reduce:hover:translate-y-0",
+  outline: "border border-subtle hover:border-default",
+  flat: "",
+};
+
+const Tag = href ? "a" : "div";
+---
+
+<Tag class:list={[base, variants[variant], className]} {...href ? { href } : {}}>
+  <slot />
+</Tag>

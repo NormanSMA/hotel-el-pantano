@@ -1,0 +1,77 @@
+---
+import Button from "../ui/Button.astro";
+import Icon from "../ui/Icon.astro";
+import Media from "../ui/Media.astro";
+import { eventTypes } from "../../data/events";
+
+/** Desfase vertical por tarjeta: rompe la cuadrícula rígida en escritorio. */
+const offsets = ["lg:mt-0", "lg:mt-10", "lg:mt-20"];
+---
+
+<section class="relative isolate overflow-hidden bg-ink-950">
+  <Media
+    src="/images/eventos/bodas/mesa-invitados-aire-libre.webp"
+    alt=""
+    sizes="100vw"
+    class="absolute inset-0 -z-10 size-full object-cover"
+  />
+  <!-- La fotografía es textura de fondo, no protagonista. -->
+  <div class="absolute inset-0 -z-10 bg-ink-950/88"></div>
+
+  <div class="container-site section-padding">
+    <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4 lg:self-center" data-reveal>
+        <p class="kicker mb-5 text-gold-400">Eventos</p>
+
+        <h2 class="text-h2 text-white">Celebraciones que dejan huella</h2>
+
+        <p class="text-lead mt-5 text-white/70">
+          Jardines, salón techado y terraza. Un mismo lugar que se transforma
+          según lo que estés celebrando, con capacidad para hasta 400 invitados.
+        </p>
+
+        <div class="mt-9">
+          <Button href="/eventos" variant="light" icon="arrow-right">
+            Ver los espacios
+          </Button>
+        </div>
+      </div>
+
+      <ul class="grid gap-5 sm:grid-cols-3 lg:col-span-8" data-reveal-group>
+        {eventTypes.map((event, i) => (
+          <li class={offsets[i]}>
+            <a
+              href="/eventos"
+              class="group flex h-full flex-col overflow-hidden rounded-panel border border-white/12 bg-white/6 transition-[transform,border-color,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-white/30 hover:bg-white/10 motion-reduce:hover:translate-y-0"
+            >
+              <div class="card-media aspect-4/5 !bg-ink-900 p-2.5 pb-0" data-reveal-media>
+                <Media
+                  src={event.image}
+                  alt=""
+                  widths={[300, 450, 600]}
+                  sizes="(min-width: 1024px) 22vw, (min-width: 640px) 30vw, 100vw"
+                  class="size-full rounded-[calc(var(--radius-panel)-0.4rem)] object-cover"
+                />
+              </div>
+
+              <div class="flex flex-1 flex-col p-6">
+                <p class="text-2xs font-semibold uppercase tracking-[0.14em] text-white/45">
+                  {event.kicker}
+                </p>
+                <h3 class="text-h3 mt-2 text-white">{event.title}</h3>
+
+                <span class="mt-auto flex items-center gap-2 pt-5 text-sm text-white/55 transition-colors duration-300 group-hover:text-white">
+                  Ver más
+                  <Icon
+                    name="arrow-right"
+                    class="size-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+                  />
+                </span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

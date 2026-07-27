@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+import { image } from "../../lib/images";
+
+interface Props {
+  /** Ruta pública, p. ej. "/images/hero/hotel-pantano-nocturno.webp". */
+  src: string;
+  alt: string;
+  /** Anchos a generar. Por defecto cubre desde móvil hasta pantalla grande. */
+  widths?: number[];
+  /** Atributo `sizes`: le dice al navegador qué ancho ocupará la imagen. */
+  sizes?: string;
+  loading?: "lazy" | "eager";
+  priority?: boolean;
+  class?: string;
+  /** Relación de aspecto forzada; recorta con `object-cover`. */
+  ratio?: number;
+}
+
+const {
+  src,
+  alt,
+  widths,
+  sizes = "100vw",
+  loading = "lazy",
+  priority = false,
+  class: className = "",
+  ratio,
+}: Props = Astro.props;
+
+const source = image(src);
+
+// No tiene sentido pedir anchos mayores que el original.
+const candidates = (widths ?? [480, 768, 1024, 1440, 1920]).filter(
+  (w) => w <= source.width
+);
+const resolved = candidates.length > 0 ? candidates : [source.width];
+---
+
+<Image
+  src={source}
+  alt={alt}
+  widths={resolved}
+  sizes={sizes}
+  {...ratio ? { aspectRatio: ratio } : {}}
+  loading={priority ? "eager" : loading}
+  decoding={priority ? "sync" : "async"}
+  fetchpriority={priority ? "high" : "auto"}
+  class={className}
+/>

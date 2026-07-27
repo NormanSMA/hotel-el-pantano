@@ -1,0 +1,75 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "./icons";
+
+interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  /**
+   * solid   → acción principal (neutro: negro en claro, blanco en oscuro)
+   * outline → acción secundaria
+   * light   → acción principal sobre fotografía o fondo oscuro
+   * ghost   → acción terciaria, se lee como enlace
+   */
+  variant?: "solid" | "outline" | "light" | "ghost";
+  size?: "sm" | "md" | "lg";
+  icon?: IconName;
+  iconPosition?: "start" | "end";
+  full?: boolean;
+  external?: boolean;
+  class?: string;
+  id?: string;
+  "aria-label"?: string;
+}
+
+const {
+  href,
+  type = "button",
+  variant = "solid",
+  size = "md",
+  icon,
+  iconPosition = "end",
+  full = false,
+  external = false,
+  class: className = "",
+  ...rest
+}: Props = Astro.props;
+
+const base =
+  "group/btn inline-flex items-center justify-center gap-2.5 rounded-full font-medium " +
+  "transition-colors duration-200 " +
+  "focus-visible:outline-2 focus-visible:outline-offset-3 " +
+  "disabled:pointer-events-none disabled:opacity-50";
+
+const sizes = {
+  sm: "px-4 py-2 text-sm",
+  md: "px-6 py-3 text-[0.9375rem]",
+  lg: "px-8 py-4 text-base",
+};
+
+const variants = {
+  solid: "bg-action text-action-content hover:bg-action-hover focus-visible:outline-(--ring)",
+  outline:
+    "border border-default text-content hover:border-strong hover:bg-surface-sunken focus-visible:outline-(--ring)",
+  light: "bg-white text-ink-950 hover:bg-ink-100 focus-visible:outline-white",
+  ghost: "rounded-full text-content hover:bg-surface-sunken focus-visible:outline-(--ring)",
+};
+
+const classes = [base, sizes[variant === "ghost" ? "sm" : size], variants[variant], full ? "w-full" : "", className]
+  .filter(Boolean)
+  .join(" ");
+
+const externalAttrs = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+const Tag = href ? "a" : "button";
+---
+
+<Tag class={classes} {...href ? { href } : { type }} {...externalAttrs} {...rest}>
+  {icon && iconPosition === "start" && <Icon name={icon} class="size-[1.1em] shrink-0" />}
+  <slot />
+  {icon && iconPosition === "end" && (
+    <Icon
+      name={icon}
+      class="size-[1.1em] shrink-0 transition-transform duration-200 group-hover/btn:translate-x-0.5 motion-reduce:transition-none"
+    />
+  )}
+</Tag>

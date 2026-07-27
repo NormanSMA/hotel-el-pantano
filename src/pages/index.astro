@@ -1,24 +1,24 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import Features from '../components/Features.astro';
-import FoodShowcase from '../components/FoodShowcase.astro';
-import RoomsPreview from '../components/RoomsPreview.astro';
-import History from '../components/History.astro';
-import Events from '../components/Events.astro';
-import Footer from '../components/Footer.astro';
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/sections/Hero.astro";
+import Promise from "../components/sections/Promise.astro";
+import Signature from "../components/sections/Signature.astro";
+import RoomsPreview from "../components/sections/RoomsPreview.astro";
+import HistoryTeaser from "../components/sections/HistoryTeaser.astro";
+import EventsTeaser from "../components/sections/EventsTeaser.astro";
+import LocationStrip from "../components/sections/LocationStrip.astro";
+import { site } from "../data/site";
 ---
 
-<Layout title="Hotel y Restaurante El Pantano | Jalapa, Nicaragua">
-	<Navbar />
-	<main>
-		<Hero />
-        <Features />
-        <FoodShowcase />
-        <RoomsPreview />
-        <History />
-        <Events />
-	</main>
-	<Footer />
+<Layout
+  title={`${site.name} | Jalapa, Nueva Segovia`}
+  description="Hotel campestre y restaurante en Jalapa, Nueva Segovia. Cabañas desde C$500, cocina nicaragüense y salón para hasta 400 personas. Reservá por WhatsApp."
+>
+  <Hero />
+  <Promise />
+  <Signature />
+  <RoomsPreview />
+  <EventsTeaser />
+  <HistoryTeaser />
+  <LocationStrip />
 </Layout>

@@ -1,171 +1,247 @@
 ---
-import '../styles/global.css';
-import Analytics from '@vercel/analytics/astro';
-import SpeedInsights from '@vercel/speed-insights/astro';
+// Una sola familia tipográfica, auto-hospedada: sin peticiones a Google Fonts.
+import "@fontsource-variable/outfit";
+import "../styles/global.css";
+
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
+
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Icon from "../components/ui/Icon.astro";
+
+import { site } from "../data/site";
+import { graph, organizationSchema, websiteSchema } from "../lib/seo";
 
 interface Props {
-	title: string;
-    description?: string;
-    image?: string;
-    url?: string;
+  title: string;
+  description?: string;
+  /** Imagen para compartir. Debe ser 1200x630. */
+  image?: string;
+  /** Nodos JSON-LD adicionales propios de la página. */
+  schema?: object[];
+  noindex?: boolean;
+  bodyClass?: string;
 }
 
-const { 
-    title, 
-    description = "Hotel y Restaurante El Pantano en Jalapa, Nicaragua. Un rincón campestre único para crear recuerdos inolvidables.",
-    image = "/images/hero/jardin-nocturno-luces.webp",
-    url = Astro.url.href
-} = Astro.props;
+const {
+  title,
+  description = site.description,
+  image = site.defaultOgImage,
+  schema = [],
+  noindex = false,
+  bodyClass = "",
+}: Props = Astro.props;
 
-const siteUrl = 'https://www.hotel-el-pantano.org';
-const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+// Google recorta los títulos alrededor de los 60 caracteres, así que el sufijo
+// de marca se mantiene corto. Si el título ya nombra la ciudad no se repite:
+// "Menú del Restaurante en Jalapa | El Pantano" se lee mejor que repetir Jalapa.
+const pageTitle = title.includes(site.shortName)
+  ? title
+  : title.includes("Jalapa")
+    ? `${title} | ${site.shortName}`
+    : `${title} | ${site.shortName}, Jalapa`;
+
+// Astro genera las páginas como /menu/index.html, así que las URL canónicas
+// llevan barra final igual que las del sitemap. Que ambas coincidan evita que
+// Google vea dos direcciones distintas para la misma página.
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = new URL(path, site.url).href;
+
+const ogImage = image.startsWith("http") ? image : new URL(image, site.url).href;
+
+const jsonLd = graph([organizationSchema, websiteSchema, ...schema]);
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-MVB82FRY9Q"></script>
-		<script is:inline>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
+<html lang="es-NI" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-			gtag('config', 'G-MVB82FRY9Q');
-		</script>
-		<script is:inline>
-			const theme = (() => {
-				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-					return localStorage.getItem('theme');
-				}
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					return 'dark';
-				}
-				return 'light';
-			})();
-		
-			if (theme === 'light') {
-				document.documentElement.classList.remove('dark');
-			} else {
-				document.documentElement.classList.add('dark');
-			}
-			window.localStorage.setItem('theme', theme);
-		</script>
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1"}
+    />
 
-		<!-- Open Graph -->
-		<meta property="og:type" content="website" />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={ogImage} />
-		<meta property="og:url" content={url} />
-		<meta property="og:locale" content="es_NI" />
-		<meta property="og:site_name" content="Hotel El Pantano" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="author" content={site.name} />
+    <meta name="geo.region" content="NI-NS" />
+    <meta name="geo.placename" content="Jalapa, Nueva Segovia" />
 
-		<!-- Twitter Cards -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImage} />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
-		<!-- Schema.org JSON-LD -->
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": ["Hotel", "Restaurant"],
-			"name": "Hotel y Restaurante El Pantano",
-			"description": "Hotel y Restaurante campestre familiar en Jalapa, Nueva Segovia, Nicaragua.",
-			"url": siteUrl,
-			"telephone": "+50586538494",
-			"email": "info@hotelelpantano.com",
-			"image": `${siteUrl}/images/hero/jardin-nocturno-luces.webp`,
-			"logo": `${siteUrl}/logo.png`,
-			"address": {
-				"@type": "PostalAddress",
-				"addressLocality": "Jalapa",
-				"addressRegion": "Nueva Segovia",
-				"addressCountry": "NI"
-			},
-			"geo": {
-				"@type": "GeoCoordinates",
-				"latitude": 13.9213568,
-				"longitude": -86.1342697
-			},
-			"openingHoursSpecification": [
-				{
-					"@type": "OpeningHoursSpecification",
-					"dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-					"opens": "11:00",
-					"closes": "21:00",
-					"description": "Restaurante"
-				},
-				{
-					"@type": "OpeningHoursSpecification",
-					"dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-					"opens": "00:00",
-					"closes": "23:59",
-					"description": "Recepción 24 horas"
-				}
-			],
-			"priceRange": "$$",
-			"servesCuisine": "Nicaragüense",
-			"sameAs": [
-				"https://www.facebook.com/hotelpantano"
-			]
-		})} />
-	</head>
-	<body class="bg-white flex flex-col min-h-screen">
-		<slot />
-        
-        <!-- Back to Top Button -->
-        <button 
-            id="back-to-top" 
-            aria-label="Volver arriba"
-            class="fixed bottom-8 right-8 bg-primary hover:bg-primary-dark text-white p-3 rounded-full shadow-lg transform transition-all duration-300 opacity-0 translate-y-10 pointer-events-none z-50 hover:scale-110"
-        >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-        </button>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content={`${site.name}, Jalapa, Nueva Segovia`} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={site.locale} />
 
-        <script>
-            // Back to top button
-            const btn = document.getElementById('back-to-top');
-            
-            const toggleVisibility = () => {
-                if (window.scrollY > 300) {
-                    btn?.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
-                } else {
-                    btn?.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none');
-                }
-            };
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
-            const scrollToTop = () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            };
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
-            window.addEventListener('scroll', toggleVisibility);
-            btn?.addEventListener('click', scrollToTop);
+    <!--
+      Se marca <html class="js"> antes de pintar para que los reveals sólo se
+      activen si hay JavaScript. Sin él, el contenido es visible de entrada.
+    -->
+    <script is:inline>
+      document.documentElement.classList.add("js");
+    </script>
 
-            // Scroll animations with IntersectionObserver
-            const animatedElements = document.querySelectorAll('[data-animate]');
-            if (animatedElements.length > 0) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    <!-- Google Analytics: se carga tras la interacción para no penalizar el LCP -->
+    <script is:inline define:vars={{ gaId: "G-MVB82FRY9Q" }}>
+      (() => {
+        let loaded = false;
+        const load = () => {
+          if (loaded) return;
+          loaded = true;
+          const s = document.createElement("script");
+          s.async = true;
+          s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag("js", new Date());
+          window.gtag("config", gaId, { anonymize_ip: true });
+        };
+        ["pointerdown", "keydown", "scroll", "touchstart"].forEach((evt) =>
+          window.addEventListener(evt, load, { once: true, passive: true })
+        );
+        setTimeout(load, 4000);
+      })();
+    </script>
+  </head>
 
-                animatedElements.forEach(el => observer.observe(el));
+  <body class:list={["flex min-h-svh flex-col bg-surface text-content", bodyClass]}>
+    <a
+      href="#contenido"
+      class="sr-only-focusable fixed left-4 top-4 z-[100] rounded-full bg-action px-5 py-3 text-sm font-semibold text-action-content"
+    >
+      Saltar al contenido
+    </a>
+
+    <Navbar />
+
+    <main id="contenido" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <button
+      id="back-to-top"
+      type="button"
+      aria-label="Volver arriba"
+      class="pointer-events-none fixed bottom-6 right-6 z-40 translate-y-2 rounded-full border border-default bg-surface p-3 text-content opacity-0 shadow-soft transition-[opacity,transform,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-surface-sunken motion-reduce:transition-none"
+    >
+      <Icon name="arrow-up" class="size-4" />
+    </button>
+
+    <script>
+      // ---- Botón "volver arriba" ------------------------------------------
+      const topBtn = document.getElementById("back-to-top");
+      let ticking = false;
+
+      const onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const visible = window.scrollY > 600;
+          topBtn?.classList.toggle("opacity-0", !visible);
+          topBtn?.classList.toggle("translate-y-2", !visible);
+          topBtn?.classList.toggle("pointer-events-none", !visible);
+          ticking = false;
+        });
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      topBtn?.addEventListener("click", () => {
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+      });
+
+      // ---- Reveals al hacer scroll ----------------------------------------
+      const revealTargets = document.querySelectorAll<HTMLElement>(
+        "[data-reveal], [data-reveal-group], [data-reveal-media]"
+      );
+
+      if (revealTargets.length > 0 && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
             }
-        </script>
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
+        );
+        revealTargets.forEach((el) => observer.observe(el));
+      } else {
+        revealTargets.forEach((el) => el.classList.add("is-visible"));
+      }
 
-        <Analytics />
-        <SpeedInsights />
-	</body>
+      // ---- Contadores ------------------------------------------------------
+      // Las cifras grandes suben desde cero al entrar en pantalla. Se anima
+      // sólo el número: "20+" cuenta y conserva el signo.
+      const counters = document.querySelectorAll<HTMLElement>("[data-count]");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (counters.length > 0 && "IntersectionObserver" in window && !reduceMotion) {
+        const run = (el: HTMLElement) => {
+          const raw = el.dataset.count || el.textContent || "";
+          const target = Number.parseInt(raw.replace(/[^0-9]/g, ""), 10);
+          if (!Number.isFinite(target)) return;
+          const suffix = raw.replace(/[0-9\s]/g, "");
+          const duration = 1100;
+          const start = performance.now();
+
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            // Desaceleración cúbica: arranca rápido y se asienta
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = String(Math.round(target * eased)) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+
+          el.textContent = "0" + suffix;
+          requestAnimationFrame(tick);
+        };
+
+        const counterObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              run(entry.target as HTMLElement);
+              counterObserver.unobserve(entry.target);
+            }
+          },
+          { threshold: 0.6 }
+        );
+
+        counters.forEach((el) => counterObserver.observe(el));
+      }
+    </script>
+
+    <Analytics />
+    <SpeedInsights />
+  </body>
 </html>

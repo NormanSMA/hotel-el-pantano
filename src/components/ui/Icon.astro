@@ -1,0 +1,42 @@
+---
+import { iconPaths, solidIcons, type IconName } from "./icons";
+
+interface Props {
+  name: IconName;
+  class?: string;
+  /** Los iconos son decorativos por defecto; pasar un label los expone a lectores de pantalla. */
+  label?: string;
+}
+
+const { name, class: className = "size-5", label }: Props = Astro.props;
+
+const isSolid = solidIcons.has(name);
+const aria = label
+  ? ({ role: "img", "aria-label": label } as const)
+  : ({ "aria-hidden": "true" } as const);
+---
+
+
+{
+  isSolid ? (
+    <svg
+      class={className}
+      viewBox={name === "check-circle" || name === "star" ? "0 0 20 20" : "0 0 24 24"}
+      fill="currentColor"
+      {...aria}
+      set:html={iconPaths[name]}
+    />
+  ) : (
+    <svg
+      class={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      {...aria}
+      set:html={iconPaths[name]}
+    />
+  )
+}

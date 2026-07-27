@@ -1,0 +1,44 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/ui/Button.astro";
+import { mainNav } from "../data/navigation";
+---
+
+<Layout
+  title="Página no encontrada"
+  description="La página que buscás no existe o cambió de dirección. Volvé al inicio de Hotel El Pantano o usá los enlaces a habitaciones, restaurante y eventos."
+  noindex
+>
+  <section class="flex min-h-[78svh] items-center bg-surface">
+    <div class="container-site py-24">
+      <p class="kicker mb-6">Error 404</p>
+
+      <h1 class="text-h1 max-w-2xl">Esta página no existe</h1>
+
+      <p class="text-lead mt-6 max-w-xl text-content-muted">
+        O cambió de dirección. Te dejamos el camino de vuelta.
+      </p>
+
+      <div class="mt-10">
+        <Button href="/" variant="solid" icon="arrow-right">Volver al inicio</Button>
+      </div>
+
+      <nav aria-label="Enlaces útiles" class="mt-16 border-t border-subtle pt-8">
+        <ul class="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+          {mainNav
+            .flatMap((item) => item.children ?? [item])
+            .map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-content-muted underline decoration-1 underline-offset-4 transition-colors hover:text-content"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+</Layout>

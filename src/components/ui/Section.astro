@@ -1,0 +1,30 @@
+---
+interface Props {
+  id?: string;
+  /** surface = blanco · sunken = gris claro · inverse = negro */
+  tone?: "surface" | "sunken" | "inverse";
+  width?: "site" | "prose";
+  class?: string;
+  as?: "section" | "div" | "article";
+}
+
+const {
+  id,
+  tone = "surface",
+  width = "site",
+  class: className = "",
+  as: Tag = "section",
+}: Props = Astro.props;
+
+const tones = {
+  surface: "bg-surface text-content",
+  sunken: "bg-surface-sunken text-content",
+  inverse: "bg-surface-inverse text-white",
+};
+---
+
+<Tag id={id} class:list={["section-padding relative", tones[tone], className]}>
+  <div class:list={[width === "prose" ? "container-prose" : "container-site", "relative"]}>
+    <slot />
+  </div>
+</Tag>

@@ -1,0 +1,50 @@
+---
+interface Props {
+  kicker?: string;
+  title: string;
+  lead?: string;
+  align?: "center" | "start";
+  /** Sobre fondos oscuros o fotografía. */
+  inverse?: boolean;
+  level?: "h1" | "h2" | "h3";
+  class?: string;
+}
+
+const {
+  kicker,
+  title,
+  lead,
+  align = "start",
+  inverse = false,
+  level: Heading = "h2",
+  class: className = "",
+}: Props = Astro.props;
+---
+
+<div
+  class:list={[
+    "flex flex-col",
+    align === "center" ? "mx-auto max-w-2xl items-center text-center" : "max-w-2xl items-start",
+    className,
+  ]}
+  data-reveal-group
+>
+  {kicker && (
+    <p class:list={["kicker mb-5", inverse && "text-gold-400"]}>{kicker}</p>
+  )}
+
+  <Heading
+    class:list={[
+      Heading === "h1" ? "text-h1" : "text-h2",
+      inverse ? "text-white" : "text-content",
+    ]}
+  >
+    {title}
+  </Heading>
+
+  {lead && (
+    <p class:list={["text-lead mt-5", inverse ? "text-white/65" : "text-content-muted"]}>
+      {lead}
+    </p>
+  )}
+</div>

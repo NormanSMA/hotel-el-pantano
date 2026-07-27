@@ -1,0 +1,88 @@
+---
+import Media from "./Media.astro";
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  image: string;
+  imageAlt: string;
+  size?: "full" | "compact";
+  breadcrumbs?: { label: string; href?: string }[];
+}
+
+const {
+  eyebrow,
+  title,
+  lead,
+  image,
+  imageAlt,
+  size = "compact",
+  breadcrumbs = [],
+}: Props = Astro.props;
+---
+
+<section
+  class:list={[
+    "relative flex items-end overflow-hidden rounded-b-panel bg-ink-950",
+    size === "full" ? "min-h-[100svh]" : "min-h-[52svh] md:min-h-[58svh]",
+  ]}
+>
+  <Media
+    src={image}
+    alt={imageAlt}
+    sizes="100vw"
+    priority
+    class="absolute inset-0 size-full object-cover"
+  />
+  <div class="scrim absolute inset-0"></div>
+
+  <div class="container-site relative z-10 pb-14 pt-32 md:pb-20 md:pt-40">
+    {breadcrumbs.length > 0 && (
+      <nav aria-label="Ruta de navegación" class="animate-rise-in mb-8">
+        <ol class="flex flex-wrap items-center gap-2 text-sm text-white/55">
+          {breadcrumbs.map((crumb, i) => (
+            <li class="flex items-center gap-2">
+              {i > 0 && <span aria-hidden="true">/</span>}
+              {crumb.href ? (
+                <a href={crumb.href} class="underline-offset-4 transition-colors hover:text-white hover:underline">
+                  {crumb.label}
+                </a>
+              ) : (
+                <span aria-current="page" class="text-white">{crumb.label}</span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
+    <div class="max-w-3xl">
+      {eyebrow && (
+        <p class="animate-rise-in kicker mb-5 text-gold-400">
+                  {eyebrow}
+        </p>
+      )}
+
+      <h1
+        class:list={[
+          "animate-rise-in text-white [animation-delay:80ms]",
+          size === "full" ? "text-display" : "text-h1",
+        ]}
+      >
+        {title}
+      </h1>
+
+      {lead && (
+        <p class="animate-rise-in text-lead mt-6 max-w-xl text-white/70 [animation-delay:160ms]">
+          {lead}
+        </p>
+      )}
+
+      <div class="animate-rise-in mt-9 empty:mt-0 [animation-delay:240ms]">
+        <slot />
+      </div>
+    </div>
+  </div>
+
+</section>

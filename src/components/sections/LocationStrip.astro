@@ -1,0 +1,74 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import { contact, hours, whatsappLink, waMessages } from "../../data/site";
+---
+
+<!--
+  Cierre de la portada: la única llamada a la acción fuerte de la página,
+  junto con la información práctica que hace falta para venir.
+-->
+<Section tone="surface">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16" data-reveal>
+    <div class="lg:col-span-5">
+      <p class="kicker mb-5">Cómo llegar</p>
+
+      <h2 class="text-h2">A pocos minutos del centro de Jalapa</h2>
+
+      <p class="text-lead mt-5 text-content-muted">
+        Salís del casco urbano y en un rato ya estás rodeado de verde. Hay
+        parqueo dentro del predio y el restaurante abre todos los días desde la una.
+      </p>
+
+      <dl class="card mt-9 space-y-5 p-7 text-[0.9375rem]">
+        <div>
+          <dt class="text-2xs uppercase tracking-[0.14em] text-content-subtle">Dirección</dt>
+          <dd class="mt-1 text-content">{contact.addressLine}</dd>
+        </div>
+        <div>
+          <dt class="text-2xs uppercase tracking-[0.14em] text-content-subtle">
+            {hours.restaurant.label}
+          </dt>
+          <dd class="mt-1 text-content">{hours.restaurant.value}</dd>
+        </div>
+        <div>
+          <dt class="text-2xs uppercase tracking-[0.14em] text-content-subtle">Teléfono y WhatsApp</dt>
+          <dd class="mt-1">
+            <a
+              href={`tel:${contact.phoneRaw}`}
+              class="text-content underline decoration-1 underline-offset-4 hover:text-content-accent"
+            >
+              {contact.phone}
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+        <Button href={whatsappLink(waMessages.room)} external variant="solid" icon="whatsapp" iconPosition="start">
+          Reservar por WhatsApp
+        </Button>
+        <a
+          href={contact.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-[0.9375rem] text-content-muted underline decoration-1 underline-offset-4 transition-colors hover:text-content"
+        >
+          Abrir en Google Maps
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-7">
+      <div class="h-full min-h-80 overflow-hidden rounded-panel border border-subtle">
+        <iframe
+          src={contact.mapsEmbedUrl}
+          title="Mapa con la ubicación de Hotel El Pantano en Jalapa"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="size-full min-h-80 border-0"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</Section>

@@ -1,0 +1,97 @@
+---
+/**
+ * Lightbox accesible para galerías.
+ * Se activa con cualquier elemento que tenga [data-lightbox] con src/alt.
+ * Usa <dialog> nativo: gestiona foco, Escape y fondo sin librerías.
+ */
+import Icon from "./Icon.astro";
+---
+
+<dialog
+  id="lightbox"
+  aria-label="Vista ampliada de la imagen"
+  class="size-full max-h-none max-w-none bg-transparent p-0 backdrop:bg-ink-950/92 open:flex open:items-center open:justify-center"
+>
+  <button
+    id="lightbox-close"
+    type="button"
+    aria-label="Cerrar imagen"
+    class="fixed right-4 top-4 z-10 rounded-full border border-white/25 p-3 text-white transition-colors hover:bg-white hover:text-ink-950 md:right-8 md:top-8"
+  >
+    <Icon name="close" class="size-5" />
+  </button>
+
+  <button
+    id="lightbox-prev"
+    type="button"
+    aria-label="Imagen anterior"
+    class="fixed left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/25 p-3 text-white transition-colors hover:bg-white hover:text-ink-950 md:left-6"
+  >
+    <Icon name="arrow-left" class="size-5" />
+  </button>
+
+  <button
+    id="lightbox-next"
+    type="button"
+    aria-label="Imagen siguiente"
+    class="fixed right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/25 p-3 text-white transition-colors hover:bg-white hover:text-ink-950 md:right-6"
+  >
+    <Icon name="arrow-right" class="size-5" />
+  </button>
+
+  <figure class="m-0 flex max-h-[92svh] w-full max-w-6xl flex-col items-center gap-4 px-4">
+    <!-- src y alt los asigna el script al abrir; sin src="" no se dispara una petición vacía -->
+    <img id="lightbox-img" alt="" width="1600" height="1200" class="max-h-[80svh] w-auto rounded-media object-contain" />
+    <figcaption id="lightbox-caption" class="text-center text-sm text-white/65"></figcaption>
+  </figure>
+</dialog>
+
+<script>
+  const dialog = document.getElementById("lightbox") as HTMLDialogElement | null;
+  if (dialog) {
+    const img = document.getElementById("lightbox-img") as HTMLImageElement;
+    const caption = document.getElementById("lightbox-caption") as HTMLElement;
+    const triggers = Array.from(document.querySelectorAll<HTMLElement>("[data-lightbox]"));
+
+    let index = 0;
+
+    const render = () => {
+      const el = triggers[index];
+      if (!el) return;
+      img.src = el.dataset.lightboxSrc ?? "";
+      img.alt = el.dataset.lightboxAlt ?? "";
+      caption.textContent = `${el.dataset.lightboxAlt ?? ""} · ${index + 1} de ${triggers.length}`;
+    };
+
+    const open = (i: number) => {
+      index = i;
+      render();
+      dialog.showModal();
+      document.documentElement.style.overflow = "hidden";
+    };
+
+    const step = (delta: number) => {
+      index = (index + delta + triggers.length) % triggers.length;
+      render();
+    };
+
+    triggers.forEach((el, i) => el.addEventListener("click", () => open(i)));
+
+    document.getElementById("lightbox-close")?.addEventListener("click", () => dialog.close());
+    document.getElementById("lightbox-next")?.addEventListener("click", () => step(1));
+    document.getElementById("lightbox-prev")?.addEventListener("click", () => step(-1));
+
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") step(1);
+      if (e.key === "ArrowLeft") step(-1);
+    });
+
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {
+      document.documentElement.style.overflow = "";
+    });
+  }
+</script>

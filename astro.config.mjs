@@ -28,7 +28,11 @@ export default defineConfig({
   ],
 
   build: {
-    inlineStylesheets: "auto",
+    // El CSS del sitio son ~9 KB comprimidos. Incrustarlo elimina una petición
+    // que bloqueaba el render unos 300 ms; a cambio, deja de cachearse entre
+    // páginas. Con un sitio de ocho páginas y visitantes que llegan de una
+    // búsqueda local, la primera impresión pesa más que la navegación interna.
+    inlineStylesheets: "always",
   },
 
   prefetch: {

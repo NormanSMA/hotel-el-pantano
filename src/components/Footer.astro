@@ -18,7 +18,7 @@ const year = new Date().getFullYear();
     <!-- Marca -->
     <div class="sm:col-span-2 lg:col-span-4">
       <div class="flex items-center gap-3">
-        <Image src={logo} alt="" widths={[56, 112]} sizes="56px" class="size-14 rounded-full object-cover" />
+        <Image src={logo} alt="" width={112} height={112} densities={[1, 2]} quality={80} class="size-14 rounded-full object-cover" />
         <span class="flex flex-col leading-tight">
           <span class="text-lg font-semibold tracking-tight text-content">{site.shortName}</span>
           <span class="text-2xs uppercase tracking-[0.2em] text-content-subtle">{site.tagline}</span>

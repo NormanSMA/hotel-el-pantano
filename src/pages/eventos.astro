@@ -39,11 +39,15 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
       <dl class="grid gap-4 sm:grid-cols-3" data-reveal-group>
         {eventCapabilities.map((cap) => (
           <div class="card p-7">
-            <dd class="text-4xl font-semibold tabular-nums text-content" data-count={cap.value}>{cap.value}</dd>
-            <dt class="mt-2 text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">
+            <dt class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">
               {cap.label}
             </dt>
-            <p class="mt-3 text-sm leading-snug text-content-muted">{cap.detail}</p>
+            <dd>
+              <span class="block text-4xl font-semibold tabular-nums text-content" data-count={cap.value}>
+                {cap.value}
+              </span>
+              <span class="mt-3 block text-sm leading-snug text-content-muted">{cap.detail}</span>
+            </dd>
           </div>
         ))}
       </dl>

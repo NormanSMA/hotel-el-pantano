@@ -15,6 +15,8 @@ interface Props {
   class?: string;
   /** Relación de aspecto forzada; recorta con `object-cover`. */
   ratio?: number;
+  /** Calidad de compresión WebP. 72 es indistinguible de 80 y pesa un tercio menos. */
+  quality?: number;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   priority = false,
   class: className = "",
   ratio,
+  quality = 72,
 }: Props = Astro.props;
 
 const source = image(src);
@@ -42,6 +45,8 @@ const resolved = candidates.length > 0 ? candidates : [source.width];
   alt={alt}
   widths={resolved}
   sizes={sizes}
+  quality={quality}
+  format="webp"
   {...ratio ? { aspectRatio: ratio } : {}}
   loading={priority ? "eager" : loading}
   decoding={priority ? "sync" : "async"}

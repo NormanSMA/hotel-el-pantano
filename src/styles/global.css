@@ -20,7 +20,8 @@
   --color-ink-200: #e7e4df;
   --color-ink-300: #d2cec7;
   --color-ink-400: #a8a39a;
-  --color-ink-500: #7d7871;
+  /* 5.2:1 sobre el gris hundido del pie: por debajo de #6e6961 no llega a AA */
+  --color-ink-500: #6e6961;
   --color-ink-600: #5c5852;
   --color-ink-700: #46433e;
   --color-ink-800: #2b2926;

@@ -29,8 +29,10 @@ const isBranchActive = (item: (typeof mainNav)[number]) =>
         <Image
           src={logo}
           alt=""
-          widths={[56, 64, 128]}
-          sizes="64px"
+          width={128}
+          height={128}
+          densities={[1, 2]}
+          quality={80}
           loading="eager"
           class="size-14 rounded-full object-cover md:size-16"
         />

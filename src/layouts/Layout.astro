@@ -2,6 +2,8 @@
 // Una sola familia tipográfica, auto-hospedada: sin peticiones a Google Fonts.
 import "@fontsource-variable/outfit";
 import "../styles/global.css";
+// La fuente no se precarga a propósito: competiría con la foto del hero, que
+// es el LCP. El CLS ya es 0 con font-display: swap.
 
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
@@ -10,7 +12,8 @@ import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import Icon from "../components/ui/Icon.astro";
 
-import { site } from "../data/site";
+import { site, contact } from "../data/site";
+import { shareCardFor } from "../data/share";
 import { graph, organizationSchema, websiteSchema } from "../lib/seo";
 
 interface Props {
@@ -18,6 +21,10 @@ interface Props {
   description?: string;
   /** Imagen para compartir. Debe ser 1200x630. */
   image?: string;
+  /** Texto alternativo de la imagen para compartir. */
+  imageAlt?: string;
+  /** Tipo Open Graph. "article" sólo para contenido editorial. */
+  ogType?: "website" | "article";
   /** Nodos JSON-LD adicionales propios de la página. */
   schema?: object[];
   noindex?: boolean;
@@ -27,7 +34,9 @@ interface Props {
 const {
   title,
   description = site.description,
-  image = site.defaultOgImage,
+  image,
+  imageAlt,
+  ogType = "website",
   schema = [],
   noindex = false,
   bodyClass = "",
@@ -48,7 +57,12 @@ const pageTitle = title.includes(site.shortName)
 const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonical = new URL(path, site.url).href;
 
-const ogImage = image.startsWith("http") ? image : new URL(image, site.url).href;
+// Cada página comparte su propia tarjeta (/og/<slug>.jpg, generada en build).
+// Una página puede forzar otra imagen con la prop `image`.
+const card = shareCardFor(Astro.url.pathname);
+const shareImage = image ?? `/og/${card.slug}.jpg`;
+const shareAlt = imageAlt ?? card.alt;
+const ogImage = shareImage.startsWith("http") ? shareImage : new URL(shareImage, site.url).href;
 
 const jsonLd = graph([organizationSchema, websiteSchema, ...schema]);
 ---
@@ -68,24 +82,31 @@ const jsonLd = graph([organizationSchema, websiteSchema, ...schema]);
     />
 
     <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light" />
     <meta name="author" content={site.name} />
     <meta name="geo.region" content="NI-NS" />
     <meta name="geo.placename" content="Jalapa, Nueva Segovia" />
+    <meta name="geo.position" content={`${contact.geo.latitude};${contact.geo.longitude}`} />
+    <meta name="ICBM" content={`${contact.geo.latitude}, ${contact.geo.longitude}`} />
+    <meta name="format-detection" content="telephone=no" />
 
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta property="og:type" content="website" />
+    <!-- Vista previa al compartir: WhatsApp, Facebook, Messenger, X, LinkedIn -->
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:alt" content={`${site.name}, Jalapa, Nueva Segovia`} />
+    <meta property="og:image:alt" content={shareAlt} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={site.locale} />
 
@@ -93,6 +114,7 @@ const jsonLd = graph([organizationSchema, websiteSchema, ...schema]);
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={shareAlt} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
@@ -171,16 +193,36 @@ const jsonLd = graph([organizationSchema, websiteSchema, ...schema]);
       };
 
       window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
 
       topBtn?.addEventListener("click", () => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+        if (window.__lenis && !reduce) window.__lenis.scrollTo(0, { duration: 1.6 });
+        else window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
       });
+
+      // ---- Movimiento bajo demanda ----------------------------------------
+      // Motion y Lenis se descargan aparte y sólo cuando aportan algo. Se
+      // esperan al primer momento libre para no competir con el primer pintado.
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const whenIdle = (fn: () => void) =>
+        "requestIdleCallback" in window
+          ? window.requestIdleCallback(fn, { timeout: 1500 })
+          : setTimeout(fn, 200);
+
+      if (!prefersReduced) {
+        whenIdle(() => {
+          if (document.querySelector("[data-parallax], [data-fade-out], [data-words], [data-magnetic]")) {
+            import("../scripts/motion");
+          }
+          if (window.matchMedia("(pointer: fine)").matches) {
+            import("../scripts/smooth");
+          }
+        });
+      }
 
       // ---- Reveals al hacer scroll ----------------------------------------
       const revealTargets = document.querySelectorAll<HTMLElement>(
-        "[data-reveal], [data-reveal-group], [data-reveal-media]"
+        "[data-reveal], [data-reveal-group], [data-reveal-media], [data-split='view']"
       );
 
       if (revealTargets.length > 0 && "IntersectionObserver" in window) {
@@ -192,9 +234,37 @@ const jsonLd = graph([organizationSchema, websiteSchema, ...schema]);
               observer.unobserve(entry.target);
             }
           },
-          { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
         );
         revealTargets.forEach((el) => observer.observe(el));
+
+        // Respaldo: el observador puede no avisar si la sección estaba sin
+        // pintar (content-visibility) o si Lenis movió el scroll de golpe.
+        // Todo lo que ya entró o quedó por encima del borde inferior se
+        // muestra, así nada queda oculto para siempre.
+        let pending = Array.from(revealTargets);
+        let queued = false;
+        const sweep = () => {
+          queued = false;
+          const limit = window.innerHeight * 0.92;
+          pending = pending.filter((el) => {
+            if (el.classList.contains("is-visible")) return false;
+            if (el.getBoundingClientRect().top < limit) {
+              el.classList.add("is-visible");
+              observer.unobserve(el);
+              return false;
+            }
+            return true;
+          });
+          if (pending.length === 0) window.removeEventListener("scroll", onSweep);
+        };
+        const onSweep = () => {
+          if (queued) return;
+          queued = true;
+          requestAnimationFrame(sweep);
+        };
+        window.addEventListener("scroll", onSweep, { passive: true });
+        window.addEventListener("load", onSweep, { once: true });
       } else {
         revealTargets.forEach((el) => el.classList.add("is-visible"));
       }

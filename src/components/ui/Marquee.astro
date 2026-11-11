@@ -1,0 +1,54 @@
+---
+/**
+ * Cinta de frases que se desliza muy despacio y sin fin. CSS puro.
+ * La pista se duplica para que el bucle no tenga cortes; la copia se oculta
+ * a los lectores de pantalla. Con movimiento reducido queda quieta y muestra
+ * todas las frases. Un botón la pausa (WCAG 2.2.2: todo lo que se mueve más
+ * de cinco segundos debe poder detenerse, también con teclado).
+ */
+interface Props {
+  items: string[];
+  /** Segundos por vuelta completa. Más alto = más lento. */
+  duration?: number;
+  class?: string;
+}
+
+const { items, duration = 60, class: className = "" }: Props = Astro.props;
+---
+
+<div class:list={["relative", className]} data-marquee>
+  <div class="marquee border-y border-subtle py-7 md:py-9" style={`--marquee-duration: ${duration}s`}>
+    {[0, 1].map((copy) => (
+      <ul class="marquee-track" aria-hidden={copy === 1 ? "true" : undefined}>
+        {items.map((item) => (
+          <li class="flex items-center gap-12 whitespace-nowrap text-h3 font-normal tracking-tight text-content-muted">
+            {item}
+            <span class="size-1.5 rounded-full bg-gold-400" aria-hidden="true"></span>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+
+  <button
+    type="button"
+    class="marquee-toggle absolute bottom-2 right-4 rounded-full border border-subtle bg-surface px-3 py-1.5 text-2xs uppercase tracking-[0.14em] text-content-muted transition-colors hover:text-content"
+    aria-pressed="false"
+    data-marquee-toggle
+  >
+    Pausar
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-marquee]").forEach((box) => {
+    const strip = box.querySelector<HTMLElement>(".marquee");
+    const button = box.querySelector<HTMLButtonElement>("[data-marquee-toggle]");
+    button?.addEventListener("click", () => {
+      const paused = !strip?.classList.contains("is-paused");
+      strip?.classList.toggle("is-paused", paused);
+      button.setAttribute("aria-pressed", String(paused));
+      button.textContent = paused ? "Reanudar" : "Pausar";
+    });
+  });
+</script>

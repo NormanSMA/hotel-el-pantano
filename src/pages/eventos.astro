@@ -7,6 +7,7 @@ import Icon from "../components/ui/Icon.astro";
 import RelatedLinks from "../components/ui/RelatedLinks.astro";
 import Media from "../components/ui/Media.astro";
 import Lightbox from "../components/ui/Lightbox.astro";
+import SplitText from "../components/ui/SplitText.astro";
 import { eventTypes, eventGallery, eventCapabilities, eventProcess } from "../data/events";
 import { whatsappLink, waMessages } from "../data/site";
 import { breadcrumbSchema } from "../lib/seo";
@@ -30,7 +31,6 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
     lead="Jardines, salón techado y terraza. Un mismo lugar que se transforma según lo que estés celebrando."
     image="/images/eventos/xv-anos/montaje-jardin.webp"
     imageAlt="Montaje de evento en los jardines de El Pantano"
-    breadcrumbs={crumbs}
   />
 
   <!-- Capacidades -->
@@ -58,36 +58,47 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
   <Section tone="surface">
     <div class="max-w-2xl" data-reveal>
       <p class="kicker mb-5">Qué organizamos</p>
-      <h2 class="text-h2">Cada ocasión, su montaje</h2>
+      <SplitText as="h2" text="Cada ocasión, su montaje" trigger="view" class="text-h2" />
       <p class="text-lead mt-4 text-content-muted">
         Adaptamos los espacios, el menú y la decoración al tipo de celebración.
       </p>
     </div>
 
-    <div class="mt-16 space-y-20 md:space-y-28">
+    <div class="mt-20 space-y-24 md:space-y-40">
       {eventTypes.map((event, i) => (
-        <article class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+        <article class="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
           <div
-            class:list={["lg:col-span-7", i % 2 === 1 && "lg:order-2"]}
+            class:list={[
+              "min-w-0 lg:col-span-7",
+              i % 2 === 1 ? "lg:order-2 lg:col-start-6" : "lg:col-start-1",
+            ]}
             data-reveal={i % 2 === 0 ? "left" : "right"}
           >
-            <div class="card-media aspect-4/3 rounded-media" data-reveal-media>
-              <Media
-                src={event.image}
-                alt={`Montaje de ${event.title.toLowerCase()} en Hotel El Pantano, Jalapa`}
-                widths={[600, 900, 1200]}
-                sizes="(min-width: 1024px) 58vw, 100vw"
-                class="size-full object-cover"
-              />
+            <div class="parallax-frame card-media relative aspect-4/3 rounded-media" data-reveal-media>
+              <div data-parallax="0.15">
+                <Media
+                  src={event.image}
+                  alt={`Montaje de ${event.title.toLowerCase()} en Hotel El Pantano, Jalapa`}
+                  widths={[600, 900, 1200]}
+                  sizes="(min-width: 1344px) 715px, (min-width: 1024px) 53vw, 100vw"
+                  class="size-full object-cover"
+                />
+              </div>
             </div>
           </div>
 
-          <div class="lg:col-span-5" data-reveal={i % 2 === 0 ? "right" : "left"}>
+          <div
+            class:list={[
+              "min-w-0 lg:col-span-4",
+              i % 2 === 1 ? "lg:order-1 lg:col-start-1" : "lg:col-start-9",
+            ]}
+            data-reveal={i % 2 === 0 ? "right" : "left"}
+          >
             <p class="kicker mb-4">{event.kicker}</p>
             <h3 class="text-h2">{event.title}</h3>
-            <p class="text-lead mt-4 text-content-muted">{event.description}</p>
+            <p class="text-lead mt-6 text-content-muted">{event.description}</p>
 
-            <ul class="card mt-7 space-y-2.5 p-6">
+            <ul class="mt-8 space-y-4 border-t border-subtle pt-8">
               {event.features.map((feature) => (
                 <li class="flex items-start gap-2.5 text-[0.9375rem] text-content">
                   <Icon name="check" class="mt-1 size-4 shrink-0 text-forest-700" />
@@ -105,13 +116,13 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
   <Section tone="sunken">
     <div class="max-w-2xl" data-reveal>
       <p class="kicker mb-5">Cómo funciona</p>
-      <h2 class="text-h2">De la idea a la fiesta</h2>
+      <SplitText as="h2" text="De la idea a la fiesta" trigger="view" class="text-h2" />
       <p class="text-lead mt-4 text-content-muted">
         Cuatro pasos, sin letra chica. La cotización no compromete a nada.
       </p>
     </div>
 
-    <ol class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+    <ol class="mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
       {eventProcess.map((step) => (
         <li class="card-interactive p-7">
           <span class="flex size-10 items-center justify-center rounded-full bg-surface-sunken text-sm font-semibold tabular-nums text-content">
@@ -126,18 +137,18 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
 
   <!-- Galería -->
   <Section tone="surface">
-    <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
-      <div class="max-w-2xl">
+    <div class="grid items-end gap-10 lg:grid-cols-12 lg:gap-8" data-reveal>
+      <div class="max-w-2xl lg:col-span-6">
         <p class="kicker mb-5">Galería</p>
-        <h2 class="text-h2">Eventos reales, aquí mismo</h2>
+        <SplitText as="h2" text="Eventos reales, aquí mismo" trigger="view" class="text-h2" />
       </div>
 
-      <div class="flex flex-wrap gap-x-5 gap-y-2" role="group" aria-label="Filtrar galería por categoría">
+      <div class="flex flex-wrap gap-3 lg:col-span-5 lg:col-start-8" role="group" aria-label="Filtrar galería por categoría">
         {categories.map((cat, i) => (
           <button
             type="button"
             class:list={[
-              "gallery-filter rounded-full border px-4 py-2 text-sm transition-colors",
+              "gallery-filter min-h-11 rounded-full border px-5 py-3 text-sm transition-colors duration-300 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring active:opacity-70 disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-wait",
               i === 0
                 ? "border-transparent bg-action text-action-content"
                 : "border-subtle text-content-muted hover:border-default hover:text-content",
@@ -151,11 +162,11 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
       </div>
     </div>
 
-    <div id="gallery-grid" class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div id="gallery-grid" class="mt-16 grid grid-cols-2 gap-6 md:grid-cols-3 lg:gap-8" data-reveal-group>
       {eventGallery.map((img, i) => (
         <button
           type="button"
-          class="gallery-item card-media group aspect-4/3 rounded-media"
+          class="gallery-item card-media group min-h-11 min-w-11 aspect-4/3 rounded-media hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring active:opacity-80 disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-wait"
           data-category={img.category}
           data-lightbox
           data-lightbox-src={galleryLarge[i]}
@@ -166,10 +177,11 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
             src={img.src}
             alt={img.alt}
             widths={[300, 450, 600]}
-            sizes="(min-width: 1024px) 24vw, (min-width: 768px) 32vw, 48vw"
+            sizes="(min-width: 1344px) 395px, (min-width: 768px) 30vw, 46vw"
+            loading="lazy"
             class="size-full object-cover"
           />
-          <span class="card-caption absolute inset-x-0 bottom-0 p-3 text-start text-2xs uppercase tracking-[0.14em] text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <span class="scrim-strong absolute inset-x-0 bottom-0 p-3 text-start text-2xs uppercase tracking-[0.14em] text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
             {img.category}
           </span>
         </button>
@@ -181,9 +193,9 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
 
   <!-- Cierre único de la página -->
   <Section tone="inverse">
-    <div class="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end" data-reveal>
+    <div class="flex flex-col items-start justify-between gap-12 md:flex-row md:items-end" data-reveal>
       <div class="max-w-xl">
-        <h2 class="text-h2 text-white">Contanos qué estás celebrando</h2>
+        <SplitText as="h2" text="Contanos qué estás celebrando" trigger="view" class="text-h2 text-white" />
         <p class="text-lead mt-4 text-white/65">
           Con la fecha y el número de invitados te armamos una propuesta
           desglosada. Sin compromiso.
@@ -196,6 +208,7 @@ const categories = ["Todos", ...new Set(eventGallery.map((img) => img.category))
         size="lg"
         icon="whatsapp"
         iconPosition="start"
+        magnetic
       >
         Cotizar por WhatsApp
       </Button>

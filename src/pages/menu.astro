@@ -4,6 +4,7 @@ import PageHero from "../components/ui/PageHero.astro";
 import Section from "../components/ui/Section.astro";
 import Button from "../components/ui/Button.astro";
 import Icon from "../components/ui/Icon.astro";
+import SplitText from "../components/ui/SplitText.astro";
 import RelatedLinks from "../components/ui/RelatedLinks.astro";
 import { menuSections, formatPrice } from "../data/menu";
 import { site, whatsappLink, waMessages, hours } from "../data/site";
@@ -45,13 +46,12 @@ const menuSchema = {
     lead="Cocina nicaragüense sin pretensiones, hecha al momento. Los precios están en córdobas e incluyen el acompañamiento indicado."
     image="/images/comida/papas-preparadas.webp"
     imageAlt="Papas preparadas servidas en el restaurante de El Pantano"
-    breadcrumbs={crumbs}
   />
 
   <!-- Navegación interna del menú -->
   <nav
     aria-label="Secciones del menú"
-    class="sticky top-20 z-30 border-b border-subtle bg-surface md:top-24"
+    class="sticky top-20 z-30 border-b border-subtle bg-surface md:top-24 [:has(#navbar.is-hidden)_&]:top-0 md:[:has(#navbar.is-hidden)_&]:top-0"
   >
     <div class="container-site">
       <ul class="flex gap-2 overflow-x-auto py-3.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -86,21 +86,21 @@ const menuSchema = {
   {menuSections.map((section, index) => (
     <Section id={section.id} tone={index % 2 === 0 ? "surface" : "sunken"}>
       <div class="max-w-2xl" data-reveal>
-        <h2 class="text-h2">{section.title}</h2>
+        <SplitText as="h2" text={section.title} trigger="view" class="text-h2" />
         <p class="text-lead mt-4 text-content-muted">{section.subtitle}</p>
       </div>
 
       <div
         class:list={[
-          "mt-14 grid gap-x-12 gap-y-14",
+          "mt-20 grid gap-x-12 gap-y-16 lg:gap-x-16 lg:gap-y-20",
           section.categories.length >= 4 ? "md:grid-cols-2" : "md:grid-cols-2 lg:grid-cols-3",
         ]}
         data-reveal-group
       >
         {section.categories.map((category) => (
-          <article class="card p-7 md:p-8">
+          <article class="card p-7 md:p-10">
             <header>
-              <h3 class="text-h3">{category.title}</h3>
+              <SplitText as="h3" text={category.title} trigger="view" class="text-h3" />
               {category.note && (
                 <p class="mt-1.5 text-sm text-content-subtle">{category.note}</p>
               )}
@@ -156,13 +156,13 @@ const menuSchema = {
   <Section tone="inverse">
     <div class="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end" data-reveal>
       <div class="max-w-xl">
-        <h2 class="text-h2 text-white">¿Reservamos tu mesa?</h2>
+        <SplitText as="h2" text="¿Reservamos tu mesa?" trigger="view" class="text-h2 text-white" />
         <p class="text-lead mt-4 text-white/65">
           Escribinos con la hora y cuántos son. Para llevar, hacé el pedido por
           el mismo número.
         </p>
       </div>
-      <Button href={whatsappLink(waMessages.order)} external variant="light" size="lg" icon="whatsapp" iconPosition="start">
+      <Button href={whatsappLink(waMessages.order)} external variant="light" size="lg" icon="whatsapp" iconPosition="start" magnetic>
         Escribir por WhatsApp
       </Button>
     </div>

@@ -25,6 +25,9 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Archivos retirados antes de borrar
+_archivo/
+
 # Agent tooling
 .agents/
 .agent/

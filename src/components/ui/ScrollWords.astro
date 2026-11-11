@@ -1,0 +1,25 @@
+---
+/**
+ * Manifiesto que se ilumina palabra por palabra al hacer scroll.
+ * motion.ts controla la opacidad (mínimo 0,5, siempre legible). Sin JS o con
+ * movimiento reducido el texto se ve completo y quieto.
+ * Úsalo sólo con texto grande (≥ 24 px) para mantener el contraste AA.
+ */
+interface Props {
+  text: string;
+  as?: "p" | "h2" | "blockquote";
+  class?: string;
+}
+
+const { text, as: Tag = "p", class: className = "" }: Props = Astro.props;
+const words = text.trim().split(/\s+/);
+---
+
+<Tag class={className} data-words>
+  {words.map((word, i) => (
+    <>
+      <span class="scroll-word">{word}</span>
+      {i < words.length - 1 && " "}
+    </>
+  ))}
+</Tag>

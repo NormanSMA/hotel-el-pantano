@@ -1,0 +1,104 @@
+---
+/**
+ * Compartir la página. En móvil abre la hoja nativa del sistema (WhatsApp,
+ * Messenger, Instagram...). Donde no existe, despliega WhatsApp, Facebook y
+ * copiar enlace. Sin JavaScript funciona igual: es un <details> nativo.
+ */
+import Icon from "./Icon.astro";
+import { site } from "../../data/site";
+import { shareCardFor } from "../../data/share";
+
+interface Props {
+  /** Texto del mensaje. Por defecto, el titular de la tarjeta de la página. */
+  title?: string;
+  /** Ruta de la página. Por defecto, la actual. */
+  path?: string;
+  inverse?: boolean;
+}
+
+const { path = Astro.url.pathname, inverse = false } = Astro.props as Props;
+const title = (Astro.props as Props).title ?? shareCardFor(path).title;
+const url = new URL(path.endsWith("/") ? path : `${path}/`, site.url).href;
+const text = `${title} · ${site.name}`;
+const whatsapp = `https://wa.me/?text=${encodeURIComponent(`${text}\n${url}`)}`;
+const facebook = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+---
+
+<details
+  class="share group relative inline-block"
+  data-share
+  data-share-url={url}
+  data-share-title={text}
+>
+  <summary
+    class:list={[
+      "flex cursor-pointer list-none items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors duration-300 [&::-webkit-details-marker]:hidden",
+      inverse
+        ? "border-white/30 text-white hover:border-white/60 hover:bg-white/10"
+        : "border-default text-content hover:border-strong hover:bg-surface-sunken",
+    ]}
+  >
+    <Icon name="share" class="size-4" />
+    Compartir
+  </summary>
+
+  <ul class="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-card border border-subtle bg-surface-raised text-sm text-content shadow-float">
+    <li>
+      <a href={whatsapp} target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-surface-sunken">
+        <Icon name="whatsapp" class="size-4 text-forest-700" />
+        WhatsApp
+      </a>
+    </li>
+    <li>
+      <a href={facebook} target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 border-t border-subtle px-4 py-3 transition-colors hover:bg-surface-sunken">
+        <Icon name="facebook" class="size-4 text-forest-700" />
+        Facebook
+      </a>
+    </li>
+    <li>
+      <button type="button" data-share-copy class="flex w-full items-center gap-3 border-t border-subtle px-4 py-3 text-start transition-colors hover:bg-surface-sunken">
+        <Icon name="link" class="size-4 text-forest-700" />
+        <span data-share-copy-label>Copiar enlace</span>
+      </button>
+    </li>
+  </ul>
+</details>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>("[data-share]").forEach((box) => {
+    const url = box.dataset.shareUrl ?? location.href;
+    const title = box.dataset.shareTitle ?? document.title;
+    const summary = box.querySelector("summary");
+
+    // Hoja nativa del sistema cuando existe (móviles y Safari).
+    if (typeof navigator.share === "function") {
+      summary?.addEventListener("click", (e) => {
+        e.preventDefault();
+        navigator.share({ title, url }).catch(() => {
+          /* El visitante cerró la hoja: no hay nada que hacer. */
+        });
+      });
+    }
+
+    const copy = box.querySelector<HTMLButtonElement>("[data-share-copy]");
+    const label = box.querySelector<HTMLElement>("[data-share-copy-label]");
+    copy?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        if (label) label.textContent = "Enlace copiado";
+      } catch {
+        if (label) label.textContent = url;
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (box.open && !box.contains(e.target as Node)) box.open = false;
+    });
+    box.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && box.open) {
+        box.open = false;
+        summary?.focus();
+      }
+    });
+  });
+</script>

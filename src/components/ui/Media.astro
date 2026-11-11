@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image, Picture } from "astro:assets";
 import { image } from "../../lib/images";
 
 interface Props {
@@ -38,8 +38,39 @@ const candidates = (widths ?? [480, 768, 1024, 1440, 1920]).filter(
   (w) => w <= source.width
 );
 const resolved = candidates.length > 0 ? candidates : [source.width];
+
+/*
+ * Hero a pantalla completa en móvil: un teléfono típico (412 px a 1,75x)
+ * pediría la versión de 768 px. Con 88vw elige la de 640 px, un tercio más
+ * liviana. Bajo el velo oscuro y la ampliación lenta la diferencia no se ve,
+ * y es la imagen que decide el LCP.
+ */
+const priorityWidths = [640, 960, 1280, 1600, 1920].filter((w) => w <= source.width);
+const prioritySizes = sizes === "100vw" ? "(max-width: 640px) 88vw, 100vw" : sizes;
 ---
 
+{priority ? (
+  /*
+   * La imagen LCP (hero) decide el rendimiento móvil: se sirve en AVIF, que
+   * pesa cerca de la mitad que WebP a igual calidad, con WebP de respaldo.
+   * El resto de fotos se quedan en WebP: AVIF tarda mucho más en compilarse.
+   */
+  <Picture
+    src={source}
+    alt={alt}
+    widths={widths ?? (priorityWidths.length > 0 ? priorityWidths : resolved)}
+    sizes={prioritySizes}
+    formats={["avif"]}
+    fallbackFormat="webp"
+    quality={Math.min(quality, 50)}
+    {...ratio ? { aspectRatio: ratio } : {}}
+    loading="eager"
+    decoding="sync"
+    fetchpriority="high"
+    class={className}
+    pictureAttributes={{ class: "contents" }}
+  />
+) : (
 <Image
   src={source}
   alt={alt}
@@ -53,3 +84,4 @@ const resolved = candidates.length > 0 ? candidates : [source.width];
   fetchpriority={priority ? "high" : "auto"}
   class={className}
 />
+)}

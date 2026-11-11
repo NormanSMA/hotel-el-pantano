@@ -4,8 +4,18 @@ import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 
+// Dominio canónico. Al comprar hotelpantano.com basta con definir
+// PUBLIC_SITE_URL=https://hotelpantano.com en Vercel y volver a desplegar.
+// En local se puede poner en un archivo .env (no se versiona).
+try {
+  process.loadEnvFile();
+} catch {
+  // Sin .env local: se usan las variables del entorno o el valor por defecto.
+}
+const SITE_URL = (process.env.PUBLIC_SITE_URL || "https://www.hotel-el-pantano.org").replace(/\/$/, "");
+
 export default defineConfig({
-  site: "https://www.hotel-el-pantano.org",
+  site: SITE_URL,
 
   // Todo el sitio es estático: no hay rutas que necesiten servidor.
   output: "static",

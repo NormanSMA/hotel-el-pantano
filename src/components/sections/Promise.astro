@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
-import SectionHeading from "../ui/SectionHeading.astro";
+import SplitText from "../ui/SplitText.astro";
+import ScrollWords from "../ui/ScrollWords.astro";
 import Media from "../ui/Media.astro";
 import Icon from "../ui/Icon.astro";
 import type { IconName } from "../ui/icons";
@@ -34,23 +35,34 @@ const pillars: { icon: IconName; label: string; title: string; text: string; ima
 ---
 
 <Section id="promesa" tone="surface">
-  <SectionHeading
-    kicker="Por qué venir"
-    title="Tres razones por las que la gente vuelve"
-    lead="No es un hotel de paso: la mayoría de quienes llegan un fin de semana regresan al siguiente."
+  <div class="max-w-2xl">
+    <p class="kicker mb-5" data-reveal>Por qué venir</p>
+    <SplitText
+      as="h2"
+      text="Tres razones por las que la gente vuelve"
+      trigger="view"
+      class="text-h2"
+    />
+  </div>
+
+  <ScrollWords
+    text="No es un hotel de paso: la mayoría de quienes llegan un fin de semana regresan al siguiente."
+    class="text-h2 mt-16 max-w-4xl font-medium md:mt-20 lg:ml-auto"
   />
 
-  <div class="mt-14 grid gap-6 md:grid-cols-3" data-reveal-group>
+  <div class="mt-16 grid gap-8 md:mt-20 md:grid-cols-3" data-reveal-group>
     {pillars.map((pillar) => (
       <article class="card-interactive group flex flex-col overflow-hidden">
-        <div class="card-media aspect-4/3" data-reveal-media>
-          <Media
-            src={pillar.image}
-            alt={pillar.alt}
-            widths={[400, 600, 800]}
-            sizes="(min-width: 768px) 33vw, 100vw"
-            class="size-full object-cover"
-          />
+        <div class="parallax-frame card-media relative aspect-4/3" data-reveal-media>
+          <div data-parallax="0.12">
+            <Media
+              src={pillar.image}
+              alt={pillar.alt}
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1344px) 395px, (min-width: 768px) 30vw, 100vw"
+              class="size-full object-cover"
+            />
+          </div>
         </div>
 
         <div class="flex flex-1 flex-col p-7">

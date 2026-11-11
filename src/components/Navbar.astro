@@ -29,10 +29,10 @@ const isBranchActive = (item: (typeof mainNav)[number]) =>
         <Image
           src={logo}
           alt=""
-          width={128}
-          height={128}
+          width={64}
+          height={64}
           densities={[1, 2]}
-          quality={80}
+          quality={70}
           loading="eager"
           class="size-14 rounded-full object-cover md:size-16"
         />
@@ -49,7 +49,7 @@ const isBranchActive = (item: (typeof mainNav)[number]) =>
       <nav aria-label="Navegación principal" class="ml-auto hidden items-center lg:flex">
         {mainNav.map((item) =>
           item.children ? (
-            <div class="group/drop relative">
+            <div class="group/drop relative" data-dropdown>
               <button
                 type="button"
                 class:list={[
@@ -57,16 +57,16 @@ const isBranchActive = (item: (typeof mainNav)[number]) =>
                   isBranchActive(item) && "is-active",
                 ]}
                 aria-expanded="false"
-                aria-haspopup="true"
+                aria-controls="nav-servicios"
               >
                 {item.label}
                 <Icon
                   name="chevron-down"
-                  class="size-3.5 transition-transform duration-200 group-hover/drop:rotate-180"
+                  class="size-3.5 transition-transform duration-300 group-[.is-open]/drop:rotate-180"
                 />
               </button>
 
-              <div class="invisible absolute left-0 top-full w-72 translate-y-1 pt-2 opacity-0 transition-[opacity,transform,visibility] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-within/drop:visible group-focus-within/drop:translate-y-0 group-focus-within/drop:opacity-100 group-hover/drop:visible group-hover/drop:translate-y-0 group-hover/drop:opacity-100">
+              <div id="nav-servicios" class="invisible absolute left-0 top-full w-72 translate-y-2 pt-3 opacity-0 transition-[opacity,transform,visibility] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-[.is-open]/drop:visible group-[.is-open]/drop:translate-y-0 group-[.is-open]/drop:opacity-100">
                 <div class="overflow-hidden rounded-panel border border-subtle bg-surface-raised shadow-raised">
                   {item.children.map((child) => (
                     <a
@@ -254,6 +254,23 @@ const isBranchActive = (item: (typeof mainNav)[number]) =>
     border-bottom-color: var(--border-subtle);
   }
 
+  #navbar {
+    transition:
+      transform 0.7s var(--ease-out-expo),
+      background-color 0.4s var(--ease-out-quint),
+      border-color 0.4s var(--ease-out-quint);
+  }
+
+  #navbar.is-hidden {
+    transform: translate3d(0, -100%, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #navbar.is-hidden {
+      transform: none;
+    }
+  }
+
   #mobile-menu {
     display: grid;
     grid-template-rows: 0fr;
@@ -273,17 +290,63 @@ const isBranchActive = (item: (typeof mainNav)[number]) =>
   const menuToggle = document.getElementById("menu-toggle");
   const mobileMenu = document.getElementById("mobile-menu");
 
+  // Sólido al bajar 40 px. Se esconde al seguir bajando y vuelve en cuanto el
+  // visitante sube: más foto en pantalla, el menú siempre a un gesto.
   let ticking = false;
+  let lastY = window.scrollY;
   const syncNavbar = () => {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      navbar?.classList.toggle("is-scrolled", window.scrollY > 40);
+      const y = window.scrollY;
+      const menuOpen = menuToggle?.getAttribute("aria-expanded") === "true";
+      const hasFocus = navbar?.contains(document.activeElement) ?? false;
+      navbar?.classList.toggle("is-scrolled", y > 40);
+      if (Math.abs(y - lastY) > 6) {
+        // Con movimiento reducido el navbar queda fijo: la tira de pestañas
+        // del menú depende de saber si está visible.
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        navbar?.classList.toggle("is-hidden", !reduce && y > lastY && y > 480 && !menuOpen && !hasFocus);
+        lastY = y;
+      }
       ticking = false;
     });
   };
   window.addEventListener("scroll", syncNavbar, { passive: true });
-  syncNavbar();
+  navbar?.addEventListener("focusin", () => navbar.classList.remove("is-hidden"));
+  // El estado inicial (por si la página abre ya desplazada) espera a un
+  // momento libre: leer el scroll durante la carga forzaría un layout.
+  if ("requestIdleCallback" in window) window.requestIdleCallback(syncNavbar);
+  else setTimeout(syncNavbar, 200);
+
+  // ---- Desplegable "Servicios": aria-expanded refleja el estado real -------
+  document.querySelectorAll<HTMLElement>("[data-dropdown]").forEach((drop) => {
+    const trigger = drop.querySelector<HTMLButtonElement>("button");
+    if (!trigger) return;
+    const set = (open: boolean) => {
+      trigger.setAttribute("aria-expanded", String(open));
+      drop.classList.toggle("is-open", open);
+    };
+    drop.addEventListener("mouseenter", () => set(true));
+    drop.addEventListener("mouseleave", () => {
+      if (!drop.contains(document.activeElement)) set(false);
+    });
+    drop.addEventListener("focusout", (e) => {
+      if (!drop.contains(e.relatedTarget as Node | null)) set(false);
+    });
+    // Con ratón el hover ya abrió: el clic no debe cerrarlo. Con teclado
+    // (detail === 0) Enter o Espacio alternan.
+    trigger.addEventListener("click", (e) => {
+      if (e.detail === 0) set(trigger.getAttribute("aria-expanded") !== "true");
+      else set(true);
+    });
+    drop.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && trigger.getAttribute("aria-expanded") === "true") {
+        set(false);
+        trigger.focus();
+      }
+    });
+  });
 
   const setMenu = (open: boolean) => {
     if (!mobileMenu || !menuToggle) return;

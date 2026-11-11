@@ -5,7 +5,7 @@ import { site, contact } from "../data/site";
 import { breadcrumbSchema } from "../lib/seo";
 
 const crumbs = [{ label: "Inicio", href: "/" }, { label: "Privacidad" }];
-const updated = "26 de julio de 2026";
+const updated = "11 de noviembre de 2026";
 ---
 
 <Layout
@@ -13,22 +13,14 @@ const updated = "26 de julio de 2026";
   description="Cómo Hotel El Pantano trata los datos de quienes visitan su sitio web: qué se recoge, para qué se usa, cuánto tiempo se conserva y cómo ejercer tus derechos."
   schema={[breadcrumbSchema(crumbs)]}
 >
-  <Section tone="surface" width="prose" class="pt-32 md:pt-40">
-    <nav aria-label="Ruta de navegación" class="mb-8">
-      <ol class="flex flex-wrap items-center gap-2 text-sm text-content-subtle">
-        <li><a href="/" class="underline-offset-4 hover:text-content hover:underline">Inicio</a></li>
-        <li aria-hidden="true">/</li>
-        <li aria-current="page" class="text-content">Privacidad</li>
-      </ol>
-    </nav>
+  <Section tone="surface" width="prose" class="pt-36 md:pt-48">
+    <h1 class="text-h1 text-balance">Política de privacidad</h1>
+    <p class="mt-6 text-sm text-content-subtle">Última actualización: {updated}</p>
 
-    <h1 class="text-h1">Política de privacidad</h1>
-    <p class="mt-4 text-sm text-content-subtle">Última actualización: {updated}</p>
-
-    <div class="mt-12 space-y-10">
+    <div class="mt-20 space-y-16 text-lg leading-loose">
       <section>
         <h2 class="text-h3">Quiénes somos</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Este sitio pertenece a {site.name}, ubicado en {contact.addressLine}.
           Para cualquier consulta sobre esta política podés escribirnos a
           <a href={`mailto:${contact.email}`} class="text-content underline decoration-1 underline-offset-4">
@@ -40,12 +32,12 @@ const updated = "26 de julio de 2026";
 
       <section>
         <h2 class="text-h3">Qué datos recogemos</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Este sitio no tiene formularios ni registro de usuarios: no te pedimos
           nombre, correo ni teléfono en ninguna página. Lo único que se recoge
           es información estadística de navegación:
         </p>
-        <ul class="mt-4 space-y-2.5 text-content-muted">
+        <ul class="mt-6 space-y-3 text-content-muted">
           <li class="flex gap-3">
             <span aria-hidden="true" class="mt-2.5 size-1.5 shrink-0 rounded-full bg-forest-700"></span>
             <span>
@@ -63,7 +55,7 @@ const updated = "26 de julio de 2026";
             </span>
           </li>
         </ul>
-        <p class="mt-4 text-content-muted">
+        <p class="mt-6 text-content-muted">
           Nada de esto nos permite saber quién sos. Sirve para entender qué
           páginas resultan útiles y dónde el sitio va lento.
         </p>
@@ -71,7 +63,7 @@ const updated = "26 de julio de 2026";
 
       <section>
         <h2 class="text-h3">Cuando nos escribís por WhatsApp o correo</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Los botones de WhatsApp del sitio abren la aplicación con un mensaje
           empezado; la conversación ocurre en WhatsApp, bajo sus propias
           condiciones, no en esta web. Si nos escribís por WhatsApp o correo,
@@ -82,7 +74,7 @@ const updated = "26 de julio de 2026";
 
       <section>
         <h2 class="text-h3">Cookies</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Google Analytics instala cookies propias para distinguir visitas
           nuevas de recurrentes. Podés bloquearlas desde la configuración de tu
           navegador o navegar en modo incógnito; el sitio funciona igual. La
@@ -93,16 +85,17 @@ const updated = "26 de julio de 2026";
 
       <section>
         <h2 class="text-h3">Contenido de terceros</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Las páginas de inicio y contacto incluyen un mapa de Google Maps.
-          Al cargarlo, Google puede recibir tu dirección IP y datos del
-          navegador según sus propias políticas.
+          El mapa solo se carga si pulsás «Ver mapa interactivo». Entonces
+          Google puede recibir tu dirección IP y datos del navegador según sus
+          propias políticas.
         </p>
       </section>
 
       <section>
         <h2 class="text-h3">Tus derechos</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Podés pedirnos en cualquier momento que te digamos qué información
           tuya conservamos, que la corrijamos o que la borremos. Escribinos a
           <a href={`mailto:${contact.email}`} class="text-content underline decoration-1 underline-offset-4">
@@ -114,7 +107,7 @@ const updated = "26 de julio de 2026";
 
       <section>
         <h2 class="text-h3">Cambios en esta política</h2>
-        <p class="mt-3 text-content-muted">
+        <p class="mt-5 text-content-muted">
           Si cambiamos algo, actualizaremos la fecha del encabezado. Te
           recomendamos revisar esta página de vez en cuando.
         </p>

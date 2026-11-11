@@ -2,6 +2,7 @@
 import Button from "../ui/Button.astro";
 import Icon from "../ui/Icon.astro";
 import Media from "../ui/Media.astro";
+import SplitText from "../ui/SplitText.astro";
 import { eventTypes } from "../../data/events";
 
 /** Desfase vertical por tarjeta: rompe la cuadrícula rígida en escritorio. */
@@ -9,29 +10,34 @@ const offsets = ["lg:mt-0", "lg:mt-10", "lg:mt-20"];
 ---
 
 <section class="relative isolate overflow-hidden bg-ink-950">
-  <Media
-    src="/images/eventos/bodas/mesa-invitados-aire-libre.webp"
-    alt=""
-    sizes="100vw"
-    class="absolute inset-0 -z-10 size-full object-cover"
-  />
+  <div class="parallax-frame absolute inset-0 -z-10">
+    <div data-parallax="0.12">
+      <Media
+        src="/images/eventos/bodas/mesa-invitados-aire-libre.webp"
+        alt=""
+        widths={[768, 1280, 1920]}
+        sizes="100vw"
+        class="size-full object-cover"
+      />
+    </div>
+  </div>
   <!-- La fotografía es textura de fondo, no protagonista. -->
-  <div class="absolute inset-0 -z-10 bg-ink-950/88"></div>
+  <div class="scrim-strong absolute inset-0 -z-10"></div>
 
   <div class="container-site section-padding">
-    <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+    <div class="grid gap-16 lg:grid-cols-12 lg:gap-20">
       <div class="lg:col-span-4 lg:self-center" data-reveal>
         <p class="kicker mb-5 text-gold-400">Eventos</p>
 
-        <h2 class="text-h2 text-white">Celebraciones que dejan huella</h2>
+        <SplitText as="h2" text="Celebraciones que dejan huella" trigger="view" class="text-h2 text-white" />
 
         <p class="text-lead mt-5 text-white/70">
           Jardines, salón techado y terraza. Un mismo lugar que se transforma
           según lo que estés celebrando, con capacidad para hasta 400 invitados.
         </p>
 
-        <div class="mt-9">
-          <Button href="/eventos" variant="light" icon="arrow-right">
+        <div class="mt-16">
+          <Button href="/eventos" variant="light" icon="arrow-right" magnetic>
             Ver los espacios
           </Button>
         </div>
@@ -55,12 +61,12 @@ const offsets = ["lg:mt-0", "lg:mt-10", "lg:mt-20"];
               </div>
 
               <div class="flex flex-1 flex-col p-6">
-                <p class="text-2xs font-semibold uppercase tracking-[0.14em] text-white/45">
+                <p class="text-2xs font-semibold uppercase tracking-[0.14em] text-white/75">
                   {event.kicker}
                 </p>
                 <h3 class="text-h3 mt-2 text-white">{event.title}</h3>
 
-                <span class="mt-auto flex items-center gap-2 pt-5 text-sm text-white/55 transition-colors duration-300 group-hover:text-white">
+                <span class="mt-auto flex items-center gap-2 pt-5 text-sm text-white/75 transition-colors duration-300 group-hover:text-white">
                   Ver más
                   <Icon
                     name="arrow-right"

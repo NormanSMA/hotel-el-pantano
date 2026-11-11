@@ -2,6 +2,7 @@
 import Icon from "../ui/Icon.astro";
 import Media from "../ui/Media.astro";
 import Button from "../ui/Button.astro";
+import SplitText from "../ui/SplitText.astro";
 import type { IconName } from "../ui/icons";
 
 const facts: { icon: IconName; term: string; desc: string }[] = [
@@ -13,47 +14,56 @@ const facts: { icon: IconName; term: string; desc: string }[] = [
 ---
 
 <section class="relative flex min-h-[100svh] items-end overflow-hidden bg-ink-950">
-  <!-- La imagen se amplía muy despacio durante medio minuto: la escena
-       respira sin que el movimiento llegue a distraer. -->
-  <Media
-    src="/images/hero/hotel-pantano-nocturno.webp"
-    alt="Los jardines iluminados de Hotel El Pantano al anochecer, en Jalapa, Nueva Segovia"
-    sizes="100vw"
-    priority
-    class="hero-drift absolute inset-0 size-full object-cover"
-  />
+  <!-- Tres capas de movimiento lento: la foto se amplía durante medio minuto
+       (hero-drift), baja más despacio que la página al hacer scroll
+       (data-parallax) y viaja a la página siguiente (vt-hero-media). -->
+  <div class="parallax-frame vt-hero-media absolute inset-0">
+    <div data-parallax="0.3">
+      <Media
+        src="/images/hero/hotel-pantano-nocturno.webp"
+        alt="Los jardines iluminados de Hotel El Pantano al anochecer, en Jalapa, Nueva Segovia"
+        sizes="100vw"
+        priority
+        class="hero-drift size-full object-cover"
+      />
+    </div>
+  </div>
   <div class="scrim absolute inset-0"></div>
 
-  <div class="container-site relative z-10 pb-20 pt-36 md:pb-28">
-    <div class="max-w-3xl">
+  <div class="container-site relative z-10 pb-20 pt-40 md:pb-28" data-fade-out>
+    <div class="max-w-5xl">
       <p class="animate-rise-in kicker text-gold-400">Jalapa · Nueva Segovia</p>
 
-      <h1 class="animate-rise-in text-display mt-6 text-white [animation-delay:100ms]">
-        El campo, como se recuerda.
-      </h1>
+      <SplitText
+        as="h1"
+        text="El campo, como se recuerda."
+        trigger="now"
+        delay={150}
+        class="text-display mt-8 text-white"
+      />
 
-      <p class="animate-rise-in text-lead mt-7 max-w-xl text-white/75 [animation-delay:200ms]">
+      <p class="animate-rise-soft text-lead mt-9 max-w-xl text-white/80 [animation-delay:150ms]">
         Cabañas entre jardines, cocina nicaragüense hecha en casa y espacio para
         celebrar lo que importa. A pocos minutos del centro de Jalapa, a un
         mundo de distancia del ruido.
       </p>
 
-      <div class="animate-rise-in mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 [animation-delay:300ms]">
-        <Button href="/habitaciones" variant="light" size="lg" icon="arrow-right">
+      <div class="animate-rise-in mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 [animation-delay:700ms]">
+        <Button href="/habitaciones" variant="light" size="lg" icon="arrow-right" magnetic>
           Ver habitaciones
         </Button>
         <a
           href="/menu"
-          class="link-underline text-[0.9375rem] text-white/75 transition-colors hover:text-white"
+          class="link-underline text-[0.9375rem] text-white/80 transition-colors hover:text-white"
         >
           o conocé el menú del restaurante
         </a>
       </div>
 
-      <dl class="animate-rise-in mt-14 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 [animation-delay:400ms]">
+      <dl class="animate-rise-soft mt-16 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 [animation-delay:250ms]">
         {facts.map((fact) => (
           <div class="rounded-xl border border-white/15 bg-white/8 px-4 py-3.5">
-            <dt class="flex items-center gap-2 text-2xs uppercase tracking-[0.14em] text-white/70">
+            <dt class="flex items-center gap-2 text-2xs uppercase tracking-[0.14em] text-white/75">
               <Icon name={fact.icon} class="size-4 shrink-0 text-gold-400" />
               {fact.term}
             </dt>
@@ -63,4 +73,23 @@ const facts: { icon: IconName; term: string; desc: string }[] = [
       </dl>
     </div>
   </div>
+
+  <!-- Indicador de scroll: una línea que cae despacio, sólo decorativa -->
+  <div class="scroll-cue pointer-events-none absolute bottom-8 right-8 z-10 hidden h-16 w-px overflow-hidden bg-white/20 md:block" aria-hidden="true">
+    <span class="block h-1/2 w-full bg-white"></span>
+  </div>
 </section>
+
+<style>
+  .scroll-cue span {
+    animation: cue 2.4s var(--ease-in-out-soft) infinite;
+  }
+  @keyframes cue {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(200%);
+    }
+  }
+</style>

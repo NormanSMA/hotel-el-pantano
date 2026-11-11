@@ -1,6 +1,8 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import SplitText from "../ui/SplitText.astro";
+import MapEmbed from "../ui/MapEmbed.astro";
 import { contact, hours, whatsappLink, waMessages } from "../../data/site";
 ---
 
@@ -9,18 +11,18 @@ import { contact, hours, whatsappLink, waMessages } from "../../data/site";
   junto con la información práctica que hace falta para venir.
 -->
 <Section tone="surface">
-  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16" data-reveal>
+  <div class="grid gap-16 lg:grid-cols-12 lg:gap-20" data-reveal>
     <div class="lg:col-span-5">
       <p class="kicker mb-5">Cómo llegar</p>
 
-      <h2 class="text-h2">A pocos minutos del centro de Jalapa</h2>
+      <SplitText as="h2" text="A pocos minutos del centro de Jalapa" trigger="view" class="text-h2" />
 
       <p class="text-lead mt-5 text-content-muted">
         Salís del casco urbano y en un rato ya estás rodeado de verde. Hay
         parqueo dentro del predio y el restaurante abre todos los días desde la una.
       </p>
 
-      <dl class="card mt-9 space-y-5 p-7 text-[0.9375rem]">
+      <dl class="card mt-16 space-y-5 p-7 text-[0.9375rem]">
         <div>
           <dt class="text-2xs uppercase tracking-[0.14em] text-content-subtle">Dirección</dt>
           <dd class="mt-1 text-content">{contact.addressLine}</dd>
@@ -44,8 +46,8 @@ import { contact, hours, whatsappLink, waMessages } from "../../data/site";
         </div>
       </dl>
 
-      <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-        <Button href={whatsappLink(waMessages.room)} external variant="solid" icon="whatsapp" iconPosition="start">
+      <div class="mt-16 flex flex-wrap items-center gap-x-7 gap-y-4">
+        <Button href={whatsappLink(waMessages.room)} external variant="solid" icon="whatsapp" iconPosition="start" magnetic>
           Reservar por WhatsApp
         </Button>
         <a
@@ -60,15 +62,7 @@ import { contact, hours, whatsappLink, waMessages } from "../../data/site";
     </div>
 
     <div class="lg:col-span-7">
-      <div class="h-full min-h-80 overflow-hidden rounded-panel border border-subtle">
-        <iframe
-          src={contact.mapsEmbedUrl}
-          title="Mapa con la ubicación de Hotel El Pantano en Jalapa"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          class="size-full min-h-80 border-0"
-        ></iframe>
-      </div>
+      <MapEmbed title="Mapa con la ubicación de Hotel El Pantano en Jalapa" class="h-full min-h-80" />
     </div>
   </div>
 </Section>

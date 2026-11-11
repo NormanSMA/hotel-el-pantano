@@ -1,23 +1,27 @@
 ---
 import Section from "../ui/Section.astro";
 import Media from "../ui/Media.astro";
+import SplitText from "../ui/SplitText.astro";
+import Button from "../ui/Button.astro";
 import { site } from "../../data/site";
 
 const years = new Date().getFullYear() - site.foundedYear;
 ---
 
 <Section tone="sunken">
-  <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-    <div class="lg:col-span-5" data-reveal="left">
+  <div class="grid items-center gap-16 lg:grid-cols-12 lg:gap-16">
+    <div class="min-w-0 lg:col-span-6" data-reveal="left">
       <figure class="m-0">
-        <div class="card-media aspect-4/5 rounded-media" data-reveal-media>
-          <Media
-            src="/images/historia/fundador-cafe.webp"
-            alt="Wilhelmus Johannes Maria, fundador de Hotel El Pantano, tomando café"
-            widths={[400, 600, 900]}
-            sizes="(min-width: 1024px) 40vw, 100vw"
-            class="size-full object-cover"
-          />
+        <div class="parallax-frame card-media relative aspect-4/5 rounded-media" data-reveal-media>
+          <div data-parallax="0.12">
+            <Media
+              src="/images/historia/fundador-cafe.webp"
+              alt="Wilhelmus Johannes Maria, fundador de Hotel El Pantano, tomando café"
+              widths={[400, 600, 900, 1200]}
+              sizes="(min-width: 1344px) 592px, (min-width: 1024px) 44vw, 100vw"
+              class="size-full object-cover"
+            />
+          </div>
         </div>
         <figcaption class="mt-3 text-xs text-content-subtle">
           Wilhelmus Johannes Maria, fundador.
@@ -25,10 +29,10 @@ const years = new Date().getFullYear() - site.foundedYear;
       </figure>
     </div>
 
-    <div class="lg:col-span-7" data-reveal="right">
+    <div class="min-w-0 lg:col-span-5 lg:col-start-8" data-reveal="right">
       <p class="kicker mb-5">Desde {site.foundedYear}</p>
 
-      <h2 class="text-h2">Un sueño llamado El Pantano</h2>
+      <SplitText as="h2" text="Un sueño llamado El Pantano" trigger="view" class="text-h2" />
 
       <figure class="mt-8 flex gap-4">
         <span aria-hidden="true" class="mt-1 select-none text-5xl leading-none text-forest-700/35">
@@ -52,18 +56,18 @@ const years = new Date().getFullYear() - site.foundedYear;
         </p>
       </div>
 
-      <dl class="mt-10 grid grid-cols-3 gap-4">
+      <dl class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-3">
         {[
           // El año de fundación no cuenta: ver "0, 1, 2… 2003" queda raro.
           { value: String(site.foundedYear), label: "Año de fundación", count: false },
           { value: `${years}`, label: "Años recibiendo visitantes", count: true },
           { value: "400", label: "Invitados por evento", count: true },
         ].map((stat) => (
-          <div class="card p-5">
+          <div class="card min-w-0 p-4">
             <dt class="sr-only">{stat.label}</dt>
             <dd>
               <span
-                class="block text-3xl font-semibold tabular-nums text-content"
+                class="block text-2xl font-semibold tabular-nums text-content"
                 data-count={stat.count ? stat.value : undefined}
               >{stat.value}</span>
               <span class="mt-1.5 block text-xs leading-snug text-content-subtle">{stat.label}</span>
@@ -72,14 +76,11 @@ const years = new Date().getFullYear() - site.foundedYear;
         ))}
       </dl>
 
-      <p class="mt-8">
-        <a
-          href="/historia"
-          class="text-[0.9375rem] text-content underline decoration-1 underline-offset-4 transition-colors hover:text-content-accent"
-        >
+      <div class="mt-16">
+        <Button href="/historia" variant="outline" magnetic>
           Leer la historia completa →
-        </a>
-      </p>
+        </Button>
+      </div>
     </div>
   </div>
 </Section>

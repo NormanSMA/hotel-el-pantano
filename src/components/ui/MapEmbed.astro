@@ -1,0 +1,81 @@
+---
+/**
+ * Mapa con fachada: se muestra una foto del hotel y el iframe de Google Maps
+ * sólo se carga cuando el visitante lo pide. Así la página no descarga el
+ * medio megabyte de Maps ni sus cookies de terceros si nadie mira el mapa,
+ * que es lo que Lighthouse penaliza en rendimiento y buenas prácticas.
+ */
+import Media from "./Media.astro";
+import Icon from "./Icon.astro";
+import { contact } from "../../data/site";
+
+interface Props {
+  title: string;
+  /** Clases del contenedor: alto, radio, aspecto. */
+  class?: string;
+}
+
+const { title, class: className = "min-h-80" }: Props = Astro.props;
+---
+
+<div
+  class:list={["map-embed relative isolate overflow-hidden rounded-panel border border-subtle bg-ink-950", className]}
+  data-map-embed
+>
+  <Media
+    src="/images/habitaciones/fachada-nocturna.webp"
+    alt=""
+    widths={[480, 768, 1024]}
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    class="absolute inset-0 -z-10 size-full object-cover opacity-55"
+  />
+
+  <div class="flex size-full min-h-[inherit] flex-col items-center justify-center gap-5 p-8 text-center" data-map-placeholder>
+    <span class="flex size-14 items-center justify-center rounded-full bg-white text-ink-950 shadow-float">
+      <Icon name="pin" class="size-6" />
+    </span>
+    <p class="max-w-xs text-lg font-medium text-white">
+      {contact.addressLine}
+    </p>
+    <button
+      type="button"
+      class="rounded-full bg-white px-6 py-3 text-[0.9375rem] font-medium text-ink-950 transition-colors duration-300 hover:bg-ink-100 focus-visible:outline-white"
+      data-map-load
+    >
+      Ver mapa interactivo
+    </button>
+    <a
+      href={contact.mapsUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-sm text-white/85 underline decoration-1 underline-offset-4 transition-colors hover:text-white"
+    >
+      Abrir en Google Maps
+    </a>
+  </div>
+
+  <template data-map-template>
+    <iframe
+      src={contact.mapsEmbedUrl}
+      title={title}
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="absolute inset-0 size-full border-0"
+    ></iframe>
+  </template>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-map-embed]").forEach((box) => {
+    const button = box.querySelector<HTMLButtonElement>("[data-map-load]");
+    const template = box.querySelector<HTMLTemplateElement>("[data-map-template]");
+    button?.addEventListener("click", () => {
+      if (!template) return;
+      const frame = template.content.firstElementChild?.cloneNode(true) as HTMLIFrameElement | undefined;
+      if (!frame) return;
+      box.querySelector("[data-map-placeholder]")?.remove();
+      box.appendChild(frame);
+      frame.focus();
+    });
+  });
+</script>

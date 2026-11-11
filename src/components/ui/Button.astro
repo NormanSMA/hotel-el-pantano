@@ -17,6 +17,8 @@ interface Props {
   iconPosition?: "start" | "end";
   full?: boolean;
   external?: boolean;
+  /** Sigue levemente al cursor (sólo escritorio). Para la acción principal. */
+  magnetic?: boolean;
   class?: string;
   id?: string;
   "aria-label"?: string;
@@ -31,13 +33,14 @@ const {
   iconPosition = "end",
   full = false,
   external = false,
+  magnetic = false,
   class: className = "",
   ...rest
 }: Props = Astro.props;
 
 const base =
   "group/btn inline-flex items-center justify-center gap-2.5 rounded-full font-medium " +
-  "transition-colors duration-200 " +
+  "transition-colors duration-300 " +
   "focus-visible:outline-2 focus-visible:outline-offset-3 " +
   "disabled:pointer-events-none disabled:opacity-50";
 
@@ -60,10 +63,11 @@ const classes = [base, sizes[variant === "ghost" ? "sm" : size], variants[varian
   .join(" ");
 
 const externalAttrs = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+const magneticAttrs = magnetic ? { "data-magnetic": "" } : {};
 const Tag = href ? "a" : "button";
 ---
 
-<Tag class={classes} {...href ? { href } : { type }} {...externalAttrs} {...rest}>
+<Tag class={classes} {...href ? { href } : { type }} {...externalAttrs} {...magneticAttrs} {...rest}>
   {icon && iconPosition === "start" && <Icon name={icon} class="size-[1.1em] shrink-0" />}
   <slot />
   {icon && iconPosition === "end" && (

@@ -4,6 +4,8 @@ import PageHero from "../components/ui/PageHero.astro";
 import Section from "../components/ui/Section.astro";
 import Button from "../components/ui/Button.astro";
 import Icon from "../components/ui/Icon.astro";
+import MapEmbed from "../components/ui/MapEmbed.astro";
+import SplitText from "../components/ui/SplitText.astro";
 import { site, contact, hours, whatsappLink, waMessages } from "../data/site";
 import { breadcrumbSchema } from "../lib/seo";
 
@@ -86,20 +88,19 @@ const contactSchema = {
     lead="Consulta, reservación o cotización. Elegí el canal que te quede más cómodo: todos llegan a la misma gente."
     image="/images/hero/decoracion-rustica-jardin.webp"
     imageAlt="Decoración rústica en los jardines de Hotel El Pantano en Jalapa"
-    breadcrumbs={crumbs}
   />
 
   <!-- Canales -->
-  <div class="bg-surface pt-14 md:pt-20">
+  <div class="bg-surface pt-20 md:pt-28">
     <div class="container-site">
-      <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+      <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
         {channels.map((channel) => (
           <li>
             <a
               href={channel.href}
               {...channel.external ? { target: "_blank", rel: "noopener noreferrer" } : {}}
               class:list={[
-                "card-interactive group flex h-full flex-col p-7",
+                "card-interactive group flex h-full flex-col p-8",
                 channel.featured && "ring-1 ring-forest-700/25",
               ]}
             >
@@ -120,16 +121,16 @@ const contactSchema = {
 
   <!-- Atajos de WhatsApp: sustituyen al formulario con menos fricción -->
   <Section tone="surface">
-    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="grid gap-16 lg:grid-cols-12 lg:gap-24">
       <div class="lg:col-span-5" data-reveal="left">
         <p class="kicker mb-5">Escribinos</p>
-        <h2 class="text-h2">Contanos qué necesitás</h2>
-        <p class="text-lead mt-5 text-content-muted">
+        <SplitText text="Contanos qué necesitás" trigger="view" class="text-h2" />
+        <p class="text-lead mt-6 text-content-muted">
           Elegí el motivo y se abre WhatsApp con el mensaje empezado. Vos sólo
           agregás los detalles.
         </p>
 
-        <ul class="mt-9 space-y-3" data-reveal-group>
+        <ul class="mt-12 space-y-4" data-reveal-group>
           {shortcuts.map((shortcut) => (
             <li>
               <a
@@ -154,7 +155,7 @@ const contactSchema = {
           ))}
         </ul>
 
-        <p class="mt-7 text-sm text-content-muted">
+        <p class="mt-10 text-sm text-content-muted">
           ¿Preferís el correo?
           <a
             href={`mailto:${contact.email}`}
@@ -166,21 +167,13 @@ const contactSchema = {
       </div>
 
       <div class="lg:col-span-7" data-reveal="right">
-        <div class="overflow-hidden rounded-panel border border-subtle">
-          <iframe
-            src={contact.mapsEmbedUrl}
-            title="Mapa con la ubicación de Hotel El Pantano en Jalapa, Nueva Segovia"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            class="aspect-4/3 w-full border-0"
-          ></iframe>
-        </div>
+        <MapEmbed title="Mapa con la ubicación de Hotel El Pantano en Jalapa, Nueva Segovia" class="aspect-4/3" />
 
-        <div class="card mt-5 p-7">
+        <div class="card mt-8 p-8 md:p-10">
           <h2 class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">
             Horarios de atención
           </h2>
-          <dl class="mt-5 space-y-5">
+          <dl class="mt-6 space-y-6">
             <div>
               <dt class="flex items-center gap-2.5 font-medium text-content">
                 <Icon name="clock" class="size-4.5 shrink-0 text-content-subtle" />
@@ -194,7 +187,7 @@ const contactSchema = {
               ))}
             </div>
 
-            <div class="border-t border-subtle pt-5">
+            <div class="border-t border-subtle pt-6">
               <dt class="flex items-center gap-2.5 font-medium text-content">
                 <Icon name="phone" class="size-4.5 shrink-0 text-content-subtle" />
                 Llamadas y mensajes
@@ -205,7 +198,7 @@ const contactSchema = {
               </dd>
             </div>
 
-            <div class="border-t border-subtle pt-5">
+            <div class="border-t border-subtle pt-6">
               <dt class="flex items-center gap-2.5 font-medium text-content">
                 <Icon name="bed" class="size-4.5 shrink-0 text-content-subtle" />
                 Llegadas tarde
@@ -217,7 +210,7 @@ const contactSchema = {
             </div>
           </dl>
 
-          <div class="mt-6 border-t border-subtle pt-6">
+          <div class="mt-8 border-t border-subtle pt-8">
             <Button href={contact.mapsUrl} external variant="outline" full icon="map" iconPosition="start">
               Cómo llegar
             </Button>

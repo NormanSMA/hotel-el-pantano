@@ -7,14 +7,18 @@ export const site = {
   name: "Hotel & Restaurante El Pantano",
   shortName: "El Pantano",
   tagline: "Hotel & Restaurante",
-  url: "https://www.hotel-el-pantano.org",
+  /**
+   * Dominio canónico. Sale de `site` en astro.config.mjs, que a su vez lee
+   * PUBLIC_SITE_URL. Cambiar de dominio es cambiar esa variable en Vercel.
+   */
+  url: import.meta.env.SITE.replace(/\/$/, ""),
   locale: "es_NI",
   lang: "es",
   foundedYear: 2003,
   description:
     "Hotel y Restaurante campestre en Jalapa, Nueva Segovia. Cabañas rodeadas de naturaleza, cocina nicaragüense y un salón para eventos de hasta 400 personas.",
   /** Imagen dedicada de 1200x630 para compartir en WhatsApp y redes. */
-  defaultOgImage: "/og-image.jpg",
+  defaultOgImage: "/og/inicio.jpg",
 } as const;
 
 export const contact = {

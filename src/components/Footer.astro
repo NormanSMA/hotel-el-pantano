@@ -14,7 +14,7 @@ const year = new Date().getFullYear();
   llamada a la acción y repetirla aquí sólo generaba ruido.
 -->
 <footer class="border-t border-subtle bg-surface-sunken">
-  <div class="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-12">
+  <div class="container-site grid gap-14 py-20 sm:grid-cols-2 md:py-28 lg:grid-cols-12" data-reveal-group>
     <!-- Marca -->
     <div class="sm:col-span-2 lg:col-span-4">
       <div class="flex items-center gap-3">
@@ -62,7 +62,7 @@ const year = new Date().getFullYear();
     <!-- Enlaces -->
     {footerNav.map((group) => (
       <nav aria-label={group.title} class="lg:col-span-2">
-        <h2 class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">
+        <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-content">
           {group.title}
         </h2>
         <ul class="mt-5 space-y-2.5">
@@ -82,7 +82,7 @@ const year = new Date().getFullYear();
 
     <!-- Contacto -->
     <div class="lg:col-span-3">
-      <h2 class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">Contacto</h2>
+      <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-content">Contacto</h2>
       <ul class="mt-5 space-y-3 text-sm">
         <li class="flex items-start gap-2.5">
           <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-forest-700" />
@@ -118,7 +118,7 @@ const year = new Date().getFullYear();
 
     <!-- Horarios -->
     <div class="lg:col-span-3">
-      <h2 class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">Horarios</h2>
+      <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-content">Horarios</h2>
       <ul class="mt-5 space-y-3 text-sm">
         <li>
           <span class="block font-medium text-content">{hours.restaurant.label}</span>
@@ -139,7 +139,7 @@ const year = new Date().getFullYear();
   </div>
 
   <div class="border-t border-subtle">
-    <div class="container-site flex flex-col items-center justify-between gap-2 py-5 text-xs text-content-subtle sm:flex-row">
+    <div class="container-site flex flex-col items-center justify-between gap-2 py-6 text-xs text-content-subtle sm:flex-row">
       <p>© {year} {site.name}</p>
       <p class="flex items-center gap-4">
         <a href="/privacidad" class="underline-offset-4 transition-colors hover:text-content hover:underline">

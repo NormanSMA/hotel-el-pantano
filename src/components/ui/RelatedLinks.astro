@@ -1,14 +1,17 @@
 ---
 import Icon from "./Icon.astro";
+import ShareButton from "./ShareButton.astro";
 import { mainNav } from "../../data/navigation";
 
 interface Props {
   /** Ruta actual: se excluye de la lista. */
   current: string;
   title?: string;
+  /** Texto que acompaña al enlace al compartir. Por defecto, el título de la pestaña. */
+  shareTitle?: string;
 }
 
-const { current, title = "Seguí explorando" }: Props = Astro.props;
+const { current, title = "Seguí explorando", shareTitle }: Props = Astro.props;
 
 /**
  * Enlazado interno entre las tres páginas de servicio.
@@ -23,9 +26,13 @@ const others = services.filter((item) => item.href !== current);
   others.length > 0 && (
     <nav aria-label={title} class="border-t border-subtle bg-surface-sunken">
       <div class="container-site py-14">
-        <h2 class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">
-          {title}
-        </h2>
+        <!-- Compartir vive al cierre: quien llegó hasta acá ya sabe si le sirve. -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="text-2xs font-semibold uppercase tracking-[0.16em] text-content-subtle">
+            {title}
+          </h2>
+          <ShareButton title={shareTitle} />
+        </div>
 
         <ul class="mt-6 grid gap-4 sm:grid-cols-2" data-reveal-group>
           {others.map((item) => (

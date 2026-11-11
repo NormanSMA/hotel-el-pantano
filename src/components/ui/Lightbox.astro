@@ -46,6 +46,30 @@ import Icon from "./Icon.astro";
   </figure>
 </dialog>
 
+<style>
+  /* Solo transform y opacity. */
+  #lightbox[open] {
+    animation: lightbox-in 0.6s var(--ease-out-expo) both;
+  }
+
+  @keyframes lightbox-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #lightbox[open] {
+      animation: none;
+    }
+  }
+</style>
+
 <script>
   const dialog = document.getElementById("lightbox") as HTMLDialogElement | null;
   if (dialog) {

@@ -46,14 +46,15 @@
 
   /* Tipografía fluida */
   --text-2xs: 0.6875rem;
-  --text-display: clamp(2.5rem, 1.5rem + 4.6vw, 4.75rem);
-  --text-display--line-height: 1.04;
-  --text-display--letter-spacing: -0.035em;
-  --text-h1: clamp(2rem, 1.45rem + 2.6vw, 3.25rem);
-  --text-h1--line-height: 1.1;
-  --text-h1--letter-spacing: -0.03em;
-  --text-h2: clamp(1.625rem, 1.3rem + 1.7vw, 2.5rem);
-  --text-h2--line-height: 1.15;
+  /* Escala editorial: titulares grandes y aire alrededor. */
+  --text-display: clamp(2.75rem, 1.2rem + 6.2vw, 6.25rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.04em;
+  --text-h1: clamp(2.25rem, 1.35rem + 3.6vw, 4.25rem);
+  --text-h1--line-height: 1.05;
+  --text-h1--letter-spacing: -0.035em;
+  --text-h2: clamp(1.875rem, 1.3rem + 2.4vw, 3.375rem);
+  --text-h2--line-height: 1.1;
   --text-h2--letter-spacing: -0.025em;
   --text-h3: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
   --text-h3--line-height: 1.28;
@@ -68,6 +69,12 @@
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Ritmo del movimiento: lento y asentado */
+  --duration-reveal: 1.1s;
+  --duration-media: 1.6s;
+  --stagger: 110ms;
 
   --radius-card: 0.875rem;
   --radius-panel: 1.25rem;
@@ -147,6 +154,9 @@
   }
 
   body {
+    /* Los reveals laterales arrancan desplazados fuera del ancho: sin esto
+       el móvil gana scroll horizontal. `clip` no rompe position: sticky. */
+    overflow-x: clip;
     background-color: var(--surface);
     color: var(--content);
     font-family: var(--font-sans);
@@ -203,7 +213,7 @@
    ------------------------------------------------------------------------ */
 @utility container-site {
   width: 100%;
-  max-width: 78rem;
+  max-width: 84rem;
   margin-inline: auto;
   padding-inline: 1.25rem;
   @media (width >= 40rem) {
@@ -224,13 +234,28 @@
   }
 }
 
+/* Galerías y fotos casi a sangre: más ancho que el texto */
+@utility container-wide {
+  width: 100%;
+  max-width: 100rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Más aire entre secciones: el lujo se lee en el espacio vacío */
 @utility section-padding {
-  padding-block: 4.5rem;
+  padding-block: 6rem;
   @media (width >= 48rem) {
-    padding-block: 6.5rem;
+    padding-block: 8.5rem;
   }
   @media (width >= 80rem) {
-    padding-block: 8rem;
+    padding-block: 11rem;
   }
 }
 
@@ -283,14 +308,14 @@
   background-color: var(--surface-sunken);
 
   & img {
-    transition: transform 0.7s var(--ease-out-quint);
+    transition: transform 1.2s var(--ease-out-expo);
   }
 }
 
 .card-interactive:hover .card-media img,
 a:hover > .card-media img,
 .group:hover .card-media img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -307,39 +332,51 @@ a:hover > .card-media img,
    defecto: sólo se oculta cuando <html> lleva la clase .js */
 .js [data-reveal] {
   opacity: 0;
-  transform: translate3d(0, 22px, 0);
+  transform: translate3d(0, 40px, 0);
   transition:
-    opacity 0.7s var(--ease-out-quint),
-    transform 0.7s var(--ease-out-quint);
+    opacity var(--duration-reveal) var(--ease-out-quint),
+    transform var(--duration-reveal) var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 .js [data-reveal="left"] {
-  transform: translate3d(-26px, 0, 0);
+  transform: translate3d(-48px, 0, 0);
 }
 .js [data-reveal="right"] {
-  transform: translate3d(26px, 0, 0);
+  transform: translate3d(48px, 0, 0);
 }
 .js [data-reveal="scale"] {
-  transform: scale(0.97);
+  transform: scale(0.95);
 }
 
-/* Revelado de imagen: la foto entra ligeramente ampliada y se asienta.
-   Da sensación de profundidad sin desenfoques ni degradados. */
+/* Revelado de imagen por cortina: el marco se abre de abajo hacia arriba
+   mientras la foto, ampliada, se asienta. Lento, como un telón. */
+/* La cortina se aplica a la foto, no al marco: Chrome descuenta el clip-path
+   del propio elemento observado y un marco recortado al 100 % nunca
+   "entraba" en pantalla, así que la foto no aparecía jamás. */
 .js [data-reveal-media] {
   clip-path: inset(0 0 0 0 round var(--radius-media));
 }
+/* La foto nunca arranca oculta: se ve desde el primer momento, apenas
+   enmarcada y ampliada, y se abre del todo al entrar. Si el observador
+   fallara, la foto sigue a la vista. */
 .js [data-reveal-media] img {
-  transform: scale(1.08);
-  opacity: 0;
+  clip-path: inset(5% 4% 5% 4%);
+  transform: scale(1.1);
   transition:
-    transform 1.1s var(--ease-out-expo),
-    opacity 0.7s var(--ease-out-quint);
+    clip-path var(--duration-media) var(--ease-out-expo),
+    transform calc(var(--duration-media) + 0.4s) var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 .js [data-reveal-media].is-visible img {
+  clip-path: inset(0 0 0 0);
   transform: scale(1);
-  opacity: 1;
 }
+
+/* Dentro de un grupo, cada cortina espera su turno */
+.js [data-reveal-group] > :nth-child(2) [data-reveal-media] { --reveal-delay: calc(var(--stagger) * 1); }
+.js [data-reveal-group] > :nth-child(3) [data-reveal-media] { --reveal-delay: calc(var(--stagger) * 2); }
+.js [data-reveal-group] > :nth-child(4) [data-reveal-media] { --reveal-delay: calc(var(--stagger) * 3); }
 
 .js [data-reveal].is-visible {
   opacity: 1;
@@ -348,10 +385,10 @@ a:hover > .card-media img,
 
 .js [data-reveal-group] > * {
   opacity: 0;
-  transform: translate3d(0, 22px, 0);
+  transform: translate3d(0, 40px, 0);
   transition:
-    opacity 0.65s var(--ease-out-quint),
-    transform 0.65s var(--ease-out-quint);
+    opacity var(--duration-reveal) var(--ease-out-quint),
+    transform var(--duration-reveal) var(--ease-out-expo);
 }
 
 .js [data-reveal-group].is-visible > * {
@@ -360,12 +397,114 @@ a:hover > .card-media img,
 }
 
 .js [data-reveal-group].is-visible > *:nth-child(1) { transition-delay: 0ms; }
-.js [data-reveal-group].is-visible > *:nth-child(2) { transition-delay: 80ms; }
-.js [data-reveal-group].is-visible > *:nth-child(3) { transition-delay: 160ms; }
-.js [data-reveal-group].is-visible > *:nth-child(4) { transition-delay: 240ms; }
-.js [data-reveal-group].is-visible > *:nth-child(5) { transition-delay: 320ms; }
-.js [data-reveal-group].is-visible > *:nth-child(6) { transition-delay: 400ms; }
-.js [data-reveal-group].is-visible > *:nth-child(n + 7) { transition-delay: 460ms; }
+.js [data-reveal-group].is-visible > *:nth-child(2) { transition-delay: calc(var(--stagger) * 1); }
+.js [data-reveal-group].is-visible > *:nth-child(3) { transition-delay: calc(var(--stagger) * 2); }
+.js [data-reveal-group].is-visible > *:nth-child(4) { transition-delay: calc(var(--stagger) * 3); }
+.js [data-reveal-group].is-visible > *:nth-child(5) { transition-delay: calc(var(--stagger) * 4); }
+.js [data-reveal-group].is-visible > *:nth-child(6) { transition-delay: calc(var(--stagger) * 5); }
+.js [data-reveal-group].is-visible > *:nth-child(n + 7) { transition-delay: calc(var(--stagger) * 6); }
+
+/* ---- Texto por palabras con máscara -------------------------------------
+   <SplitText> envuelve cada palabra en .split-word > .split-inner. La palabra
+   sube desde debajo de su propia línea. El texto existe completo en el HTML:
+   lectores de pantalla y buscadores leen la frase normal (aria-label). */
+.split-word {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  vertical-align: top;
+  /* Deja sitio a los descendentes (g, p, y) dentro de la máscara */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.split-inner {
+  display: inline-block;
+  transform: none;
+}
+
+/* Arranque inmediato (hero): animación CSS, no espera a JavaScript */
+.js [data-split="now"] .split-inner {
+  animation: split-rise 1.25s var(--ease-out-expo) both;
+  animation-delay: calc(var(--split-base, 0ms) + var(--i, 0) * 70ms);
+}
+
+/* Arranque al entrar en pantalla: el observador añade .is-visible */
+.js [data-split="view"] .split-inner {
+  transform: translate3d(0, 110%, 0);
+  transition: transform 1.2s var(--ease-out-expo);
+  transition-delay: calc(var(--split-base, 0ms) + var(--i, 0) * 60ms);
+}
+.js [data-split="view"].is-visible .split-inner {
+  transform: none;
+}
+
+@keyframes split-rise {
+  from {
+    transform: translate3d(0, 110%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ---- Cinta lenta infinita ---------------------------------------------- */
+.marquee {
+  display: flex;
+  overflow: clip;
+  user-select: none;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--marquee-gap, 3rem);
+  padding-right: var(--marquee-gap, 3rem);
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee.is-paused .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+/* ---- Parallax ------------------------------------------------------------
+   motion.ts mueve [data-parallax] con el scroll sólo en escritorio. El marco
+   recorta y la capa interior sobra un 8 % arriba y abajo para que nunca se
+   vea el borde. El marco necesita su propia clase `relative` o `absolute`. */
+.parallax-frame {
+  overflow: hidden;
+}
+.parallax-frame > [data-parallax] {
+  position: absolute;
+  inset: -8% 0;
+}
+
+/* ---- Transiciones entre páginas (nativas, sin JavaScript) --------------- */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.7s;
+  animation-timing-function: var(--ease-in-out-soft);
+}
+
+::view-transition-group(hero-media) {
+  animation-duration: 0.9s;
+  animation-timing-function: var(--ease-out-expo);
+}
+
+/* La foto del hero viaja de una página a otra */
+.vt-hero-media {
+  view-transition-name: hero-media;
+}
 
 @keyframes rise-in {
   from {
@@ -389,7 +528,23 @@ a:hover > .card-media img,
 }
 
 .animate-rise-in {
-  animation: rise-in 0.75s var(--ease-out-quint) both;
+  animation: rise-in 1s var(--ease-out-expo) both;
+}
+
+/* Variante sin opacidad para los bloques grandes del hero: el texto es
+   visible desde el primer fotograma y sólo se asienta. Así no retrasa el
+   LCP, que Chrome no cuenta mientras la opacidad es 0. */
+@keyframes rise-soft {
+  from {
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.animate-rise-soft {
+  animation: rise-soft 1.2s var(--ease-out-expo) both;
 }
 
 .hero-drift {
@@ -414,13 +569,47 @@ a:hover > .card-media img,
   }
 
   .js [data-reveal-media] img {
-    opacity: 1;
+    clip-path: none;
+  }
+
+  .js [data-reveal-media] img,
+  .js [data-split] .split-inner {
     transform: none;
   }
 
   .hero-drift {
     animation: none;
     transform: scale(1.04);
+  }
+
+  /* Sin retardos: las palabras se ven desde el primer fotograma */
+  .js [data-split] .split-inner {
+    animation: none;
+    transition: none;
+  }
+
+  /* La cinta quieta muestra todas sus frases, en varias líneas */
+  .marquee {
+    mask-image: none;
+  }
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+  }
+  .marquee-track[aria-hidden="true"],
+  .marquee-toggle {
+    display: none;
+  }
+
+  .parallax-frame > [data-parallax] {
+    inset: 0;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 
@@ -492,6 +681,31 @@ a:hover > .card-media img,
     block-size: auto;
     opacity: 1;
   }
+}
+
+/* Las secciones bajo el hero no se maquetan hasta acercarse a la pantalla.
+   Reduce a una fracción el primer cálculo de estilo y layout en móvil.
+   `auto` en el tamaño intrínseco recuerda la altura real ya medida, así la
+   barra de scroll no salta al volver hacia arriba. */
+main > section:not(:first-child),
+body > footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 960px;
+}
+
+/* Lenis: el scroll suave lo calcula JS, así que el del navegador se apaga */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
 }
 
 .sr-only-focusable:not(:focus):not(:focus-within) {

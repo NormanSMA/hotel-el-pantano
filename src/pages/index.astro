@@ -7,6 +7,7 @@ import RoomsPreview from "../components/sections/RoomsPreview.astro";
 import HistoryTeaser from "../components/sections/HistoryTeaser.astro";
 import EventsTeaser from "../components/sections/EventsTeaser.astro";
 import LocationStrip from "../components/sections/LocationStrip.astro";
+import Marquee from "../components/ui/Marquee.astro";
 import { site } from "../data/site";
 ---
 
@@ -17,6 +18,15 @@ import { site } from "../data/site";
   <Hero />
   <Promise />
   <Signature />
+  <Marquee
+    items={[
+      "Cabañas entre jardines",
+      "Cocina nicaragüense",
+      "Eventos hasta 400 invitados",
+      "Desde 2003 en Jalapa",
+    ]}
+    duration={80}
+  />
   <RoomsPreview />
   <EventsTeaser />
   <HistoryTeaser />

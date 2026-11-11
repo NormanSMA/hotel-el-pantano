@@ -7,6 +7,7 @@ import Icon from "../components/ui/Icon.astro";
 import RelatedLinks from "../components/ui/RelatedLinks.astro";
 import Media from "../components/ui/Media.astro";
 import Lightbox from "../components/ui/Lightbox.astro";
+import SplitText from "../components/ui/SplitText.astro";
 import { roomAmenities, roomRates, roomGallery, roomFaqs, roomOffer } from "../data/rooms";
 import { formatPrice } from "../data/menu";
 import { site, whatsappLink, waMessages } from "../data/site";
@@ -54,17 +55,17 @@ const roomSchema = {
     lead="Lo esencial, bien hecho: cama cómoda, agua caliente y el silencio del campo. Sin lujos innecesarios ni sorpresas en la factura."
     image="/images/habitaciones/cabanas-exterior-nocturno.webp"
     imageAlt="Las cabañas de El Pantano iluminadas al anochecer"
-    breadcrumbs={crumbs}
   />
 
   <!-- Galería + detalle -->
   <Section tone="surface">
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <div class="lg:col-span-7" data-reveal>
-        <div class="grid grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <button
             type="button"
-            class="card-media col-span-4 aspect-16/10 rounded-media"
+            class="card-media col-span-2 aspect-16/10 rounded-media sm:col-span-4"
+            data-reveal-media
             data-lightbox
             data-lightbox-src={galleryLarge[0]}
             data-lightbox-alt={roomGallery[0].alt}
@@ -82,7 +83,7 @@ const roomSchema = {
           {roomGallery.slice(1).map((img, i) => (
             <button
               type="button"
-              class="card-media group col-span-2 aspect-4/3 rounded-media sm:col-span-1"
+              class="card-media group aspect-4/3 rounded-media"
               data-lightbox
               data-lightbox-src={galleryLarge[i + 1]}
               data-lightbox-alt={img.alt}
@@ -104,7 +105,7 @@ const roomSchema = {
       <div class="lg:col-span-5" data-reveal="right">
         <p class="kicker mb-5">Habitación estándar</p>
 
-        <h2 class="text-h2">Tu cabaña</h2>
+        <SplitText as="h2" text="Tu cabaña" trigger="view" class="text-h2" />
 
         <p class="text-lead mt-5 text-content-muted">
           Cada cabaña tiene acceso independiente desde el jardín. Adentro, lo
@@ -162,7 +163,7 @@ const roomSchema = {
           no incluyen desayuno; el restaurante abre temprano.
         </p>
 
-        <div class="mt-8">
+        <div class="mt-10">
           <Button
             href={whatsappLink(waMessages.room)}
             external
@@ -171,6 +172,7 @@ const roomSchema = {
             full
             icon="whatsapp"
             iconPosition="start"
+            magnetic
           >
             Consultar disponibilidad
           </Button>
@@ -182,7 +184,7 @@ const roomSchema = {
   <!-- Preguntas frecuentes: cierre informativo de la página -->
   <Section tone="sunken" width="prose">
     <div data-reveal>
-      <h2 class="text-h2">Preguntas frecuentes</h2>
+      <SplitText as="h2" text="Preguntas frecuentes" trigger="view" class="text-h2" />
       <p class="text-lead mt-4 text-content-muted">
         Lo que más nos consultan por WhatsApp, resuelto de una vez.
       </p>

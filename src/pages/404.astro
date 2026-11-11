@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import SplitText from "../components/ui/SplitText.astro";
 import Button from "../components/ui/Button.astro";
 import { mainNav } from "../data/navigation";
 ---
@@ -10,21 +11,21 @@ import { mainNav } from "../data/navigation";
   noindex
 >
   <section class="flex min-h-[78svh] items-center bg-surface">
-    <div class="container-site py-24">
-      <p class="kicker mb-6">Error 404</p>
+    <div class="container-site py-28 md:py-36">
+      <p class="kicker mb-8">Error 404</p>
 
-      <h1 class="text-h1 max-w-2xl">Esta página no existe</h1>
+      <SplitText as="h1" text="Esta página no existe" trigger="now" class="text-display max-w-4xl" />
 
-      <p class="text-lead mt-6 max-w-xl text-content-muted">
+      <p class="text-lead mt-10 max-w-xl text-content-muted">
         O cambió de dirección. Te dejamos el camino de vuelta.
       </p>
 
-      <div class="mt-10">
+      <div class="mt-12">
         <Button href="/" variant="solid" icon="arrow-right">Volver al inicio</Button>
       </div>
 
-      <nav aria-label="Enlaces útiles" class="mt-16 border-t border-subtle pt-8">
-        <ul class="flex flex-wrap gap-x-8 gap-y-3 text-sm">
+      <nav aria-label="Enlaces útiles" class="mt-24 border-t border-subtle pt-10">
+        <ul class="flex flex-wrap gap-x-10 gap-y-4 text-sm">
           {mainNav
             .flatMap((item) => item.children ?? [item])
             .map((item) => (

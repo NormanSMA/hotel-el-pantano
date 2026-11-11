@@ -4,7 +4,10 @@ import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 
-// Dominio canónico. Al comprar hotelpantano.com basta con definir
+// Dominio canónico. Sale de aquí el canonical, el sitemap, robots.txt y la
+// imagen que muestran WhatsApp y Facebook al compartir: tiene que ser un
+// dominio vivo. hotel-el-pantano.org se dejó de usar (2026-11-11).
+// Al comprar hotelpantano.com basta con definir
 // PUBLIC_SITE_URL=https://hotelpantano.com en Vercel y volver a desplegar.
 // En local se puede poner en un archivo .env (no se versiona).
 try {
@@ -12,7 +15,7 @@ try {
 } catch {
   // Sin .env local: se usan las variables del entorno o el valor por defecto.
 }
-const SITE_URL = (process.env.PUBLIC_SITE_URL || "https://www.hotel-el-pantano.org").replace(/\/$/, "");
+const SITE_URL = (process.env.PUBLIC_SITE_URL || "https://hotel-el-pantano.vercel.app").replace(/\/$/, "");
 
 export default defineConfig({
   site: SITE_URL,

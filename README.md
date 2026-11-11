@@ -3,7 +3,7 @@
 Sitio web oficial del **Hotel & Restaurante El Pantano**, en Jalapa, Nueva Segovia (Nicaragua).
 Hospedaje campestre, restaurante y salón de eventos para hasta 400 personas.
 
-🌐 <https://www.hotel-el-pantano.org>
+🌐 <https://hotel-el-pantano.vercel.app> (dominio propio previsto: hotelpantano.com)
 
 ---
 

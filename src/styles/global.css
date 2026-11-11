@@ -6,12 +6,27 @@
 
 @import "tailwindcss";
 
+/* Respaldo de Outfit con sus métricas: mientras la fuente web carga, el
+   texto ocupa el mismo ancho y alto. Sin esto, el cambio de fuente movía el
+   bloque del hero (CLS 0,10 en PageSpeed móvil). Proporciones medidas en el
+   navegador: Outfit 400 = 97,6 % del ancho de Arial; ascenso 100 %,
+   descenso 26 % del cuerpo. Liberation Sans tiene las métricas de Arial y es
+   la que usa Lighthouse en Linux. */
+@font-face {
+  font-family: "Outfit Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
+  size-adjust: 97.6%;
+  ascent-override: 102.5%;
+  descent-override: 26.6%;
+  line-gap-override: 0%;
+}
+
 /* ---------------------------------------------------------------------------
    1. Primitivas
    ------------------------------------------------------------------------ */
 @theme {
   /* Una única familia: la jerarquía se construye con peso, tamaño y tracking */
-  --font-sans: "Outfit Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Outfit Variable", "Outfit Fallback", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   /* Neutros ligeramente cálidos: sobre fotografía de campo, el gris frío
      se ve sucio. Estos tienen una pizca de amarillo. */
